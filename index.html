@@ -1,0 +1,2673 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>وكالة كنوز العالم للسفر والسياحة | Kinooz Al-Alam Travel & Tourism Agency</title>
+  <meta name="description" content="وكالة كنوز العالم للسفر والسياحة - بوابتكم لأفضل برامج العمرة، التأشيرات الدولية، حجوزات الطيران والفنادق، والرحلات السياحية الفاخرة.">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              gold: '#D4AF37',
+              goldHover: '#B8972C',
+              darkGold: '#947620',
+              navy: '#0A192F',
+              dark: '#020C1B',
+              lightNavy: '#112240',
+              accent: '#0284C7',
+            }
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    body { 
+      font-family: 'Cairo', sans-serif;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      overflow-x: hidden;
+    }
+    input, textarea, select {
+      -webkit-user-select: auto;
+      user-select: auto;
+    }
+    .gold-gradient { background: linear-gradient(135deg, #ECC862 0%, #D4AF37 50%, #9B7811 100%); }
+    .gold-text-gradient {
+      background: linear-gradient(135deg, #F3D079 0%, #D4AF37 50%, #AA8214 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .navy-gradient { background: linear-gradient(180deg, #0A192F 0%, #020C1B 100%); }
+    .glass-card {
+      background: rgba(17, 34, 64, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0A192F; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+    @keyframes pulse-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    .pulse-btn { animation: pulse-soft 2.5s infinite ease-in-out; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-brand-gold selection:text-brand-dark custom-scrollbar">
+
+  <!-- Toast Notification System -->
+  <div id="toastContainer" class="fixed top-4 left-4 right-4 sm:right-auto sm:left-5 z-[99999] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Booking Confirmation Success Modal -->
+  <div id="bookingSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md hidden p-4">
+    <div class="relative bg-brand-dark border-2 border-brand-gold rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-white text-center p-6 sm:p-8 animate-fadeIn">
+      <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 text-emerald-400 flex items-center justify-center text-3xl sm:text-4xl mx-auto mb-4 shadow-lg shadow-emerald-500/20">
+        <i class="fas fa-check-circle animate-bounce"></i>
+      </div>
+      
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-gold/15 border border-brand-gold/30 text-brand-gold text-xs font-bold mb-3">
+        رقم الحجز: <span id="successBookingCode" class="font-mono text-white">#KB-0000</span>
+      </div>
+
+      <h3 class="text-xl sm:text-2xl font-black text-white mb-3">
+        تم تأكيد طلبك بنجاح!
+      </h3>
+      
+      <div class="bg-brand-lightNavy/90 border border-brand-gold/30 rounded-2xl p-4 mb-5 text-slate-200 text-xs sm:text-sm leading-relaxed">
+        <p class="font-bold text-brand-gold mb-1 text-sm sm:text-base">
+          سيتم التواصل معك الآن لإكمال باقي إجراءاتك
+        </p>
+        <p class="text-slate-300">
+          شكراً لاختيارك <span class="font-bold text-white">وكالة كنوز العالم للسفر والسياحة</span>، ويسعدنا دائماً تقديم أرقى مستوى من الخدمة والراحة لك.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2.5">
+        <a id="btnSuccessWhatsAppRedirect" href="#" target="_blank" class="flex-1 gold-gradient text-brand-dark py-3.5 rounded-xl font-bold hover:shadow-lg transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+          <i class="fab fa-whatsapp text-lg text-emerald-800"></i>
+          <span>فتح محادثة الواتساب فوراً</span>
+        </a>
+        <button onclick="closeBookingSuccessModal()" class="px-5 py-3.5 rounded-xl bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700 transition text-xs sm:text-sm">
+          إغلاق النافذة
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Special Offer Promo Modal -->
+  <div id="promoModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+    <div class="relative bg-brand-dark border-2 border-brand-gold rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-white text-center p-5 sm:p-6">
+      <button onclick="closePromoModal()" class="absolute top-4 left-4 text-slate-400 hover:text-white text-2xl transition"><i class="fas fa-times"></i></button>
+      <div class="inline-block px-4 py-1 rounded-full bg-brand-gold/20 text-brand-gold text-xs font-bold mb-3 tracking-widest">
+        <i class="fas fa-gift mr-1"></i> <span>عرض استثنائي ومحدود</span>
+      </div>
+      <h3 id="promoTitle" class="text-xl sm:text-2xl font-bold gold-text-gradient mb-2">رحلات العمرة الشاملة الفاخرة</h3>
+      <p id="promoDesc" class="text-slate-300 text-xs sm:text-sm mb-4 leading-relaxed">احجز الآن برنامج عمرة 5 نجوم شامل التأشيرة والإقامة الفندقية والمواصلات بأرقى مستويات الخدمة!</p>
+      <div class="relative rounded-2xl overflow-hidden mb-5 border border-brand-gold/30 h-36 sm:h-44">
+        <img id="promoImg" src="https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80" alt="عرض خاص" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end justify-center p-3">
+          <div class="flex gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs font-bold">
+            <span class="bg-black/70 px-2 py-1 rounded border border-brand-gold/40 text-brand-gold" id="pDays">03 يوم</span>
+            <span class="bg-black/70 px-2 py-1 rounded border border-brand-gold/40 text-brand-gold" id="pHours">14 ساعة</span>
+            <span class="bg-black/70 px-2 py-1 rounded border border-brand-gold/40 text-brand-gold" id="pMins">45 دقيقة</span>
+            <span class="bg-black/70 px-2 py-1 rounded border border-brand-gold/40 text-brand-gold" id="pSecs">20 ثانية</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <a href="#booking" onclick="closePromoModal()" class="flex-1 gold-gradient text-brand-dark py-3 rounded-xl font-bold hover:shadow-lg transition flex items-center justify-center gap-2 text-xs sm:text-sm">
+          <i class="fas fa-paper-plane"></i> <span>احجز العرض الآن</span>
+        </a>
+        <button onclick="closePromoModal()" class="px-5 py-3 rounded-xl bg-slate-800 text-slate-300 font-semibold hover:bg-slate-700 transition text-xs sm:text-sm">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Bar -->
+  <header class="bg-brand-dark text-slate-300 text-[11px] sm:text-xs py-2 border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
+        <a href="tel:+966530963551" class="hover:text-brand-gold transition flex items-center gap-1.5" dir="ltr">
+          <i class="fas fa-phone-alt text-brand-gold"></i> +966 53 096 3551
+        </a>
+        <a href="https://wa.me/249913389597" target="_blank" class="hover:text-emerald-400 transition flex items-center gap-1.5" dir="ltr">
+          <i class="fab fa-whatsapp text-emerald-400"></i> +249 91 338 9597
+        </a>
+        <!-- Top Bar WhatsApp Group Link -->
+        <a id="topBarWaGroup" href="#" target="_blank" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1.5 font-bold">
+          <i class="fas fa-users"></i> <span>قروب الواتساب للعروض</span>
+        </a>
+        <a href="mailto:infokunuz26@gmail.com" class="hover:text-brand-gold transition hidden md:flex items-center gap-1.5">
+          <i class="fas fa-envelope text-brand-gold"></i> infokunuz26@gmail.com
+        </a>
+      </div>
+      <div class="text-[11px] text-brand-gold font-medium hidden sm:block">
+        <i class="fas fa-award ml-1"></i> خدمات سفر وسياحة وعمرة معتمدة وموثوقة
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation -->
+  <nav class="bg-brand-navy/95 border-b border-brand-gold/20 text-white sticky top-0 z-40 shadow-xl backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo Brand -->
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <div id="agencyLogoContainer" class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl gold-gradient p-0.5 flex items-center justify-center shadow-lg shadow-brand-gold/20 shrink-0 overflow-hidden">
+            <div class="w-full h-full bg-brand-navy rounded-2xl flex items-center justify-center overflow-hidden" id="agencyLogoWrapper">
+              <i class="fas fa-plane-departure text-brand-gold text-xl sm:text-2xl"></i>
+            </div>
+          </div>
+          <div>
+            <h1 class="text-sm sm:text-lg md:text-xl font-extrabold tracking-wide gold-text-gradient leading-tight" id="navAgencyName">
+              وكالة كنوز العالم للسفر والسياحة
+            </h1>
+            <p class="text-[9px] sm:text-[10px] text-slate-400 tracking-wider font-light" id="navAgencySub">
+              Kinooz Al-Alam For Travel & Tourism Agency
+            </p>
+          </div>
+        </div>
+
+        <!-- Desktop Links -->
+        <div class="hidden xl:flex items-center gap-6 text-sm font-semibold">
+          <a href="#hero" class="text-brand-gold hover:text-white transition">الرئيسية</a>
+          <a href="#about" class="hover:text-brand-gold transition">عن الوكالة</a>
+          <a href="#services" class="hover:text-brand-gold transition">خدماتنا</a>
+          <a href="#offers" class="hover:text-brand-gold transition">العروض</a>
+          <a href="#destinations" class="hover:text-brand-gold transition">الوجهات</a>
+          <a href="#umrah" class="hover:text-brand-gold transition">العمرة</a>
+          <a href="#visas" class="hover:text-brand-gold transition">التأشيرات</a>
+          <a href="#faq" class="hover:text-brand-gold transition">الأسئلة</a>
+          <a href="#contact" class="hover:text-brand-gold transition">تواصل معنا</a>
+        </div>
+
+        <!-- Action CTA & Hamburger -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <a href="#booking" class="inline-flex items-center gap-1.5 sm:gap-2 gold-gradient text-brand-dark px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-brand-gold/20 hover:opacity-95 transition transform hover:-translate-y-0.5">
+            <i class="fas fa-calendar-check"></i>
+            <span>طلب حجز</span>
+          </a>
+          <button onclick="toggleMobileMenu()" class="xl:hidden text-2xl text-brand-gold p-2 rounded-lg hover:bg-slate-800 focus:outline-none">
+            <i class="fas fa-bars" id="menuIcon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobileMenu" class="hidden xl:hidden bg-brand-dark border-b border-brand-gold/30 px-6 py-6 transition-all duration-300">
+      <div class="flex flex-col gap-4 text-sm font-bold">
+        <a href="#hero" onclick="toggleMobileMenu()" class="text-brand-gold flex items-center justify-between py-1"><span>الرئيسية</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#about" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>عن الوكالة</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#services" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>خدماتنا المتميزة</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#offers" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>العروض والخصومات</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#destinations" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>أشهر الوجهات</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#umrah" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>برامج العمرة</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#visas" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>التأشيرات الدولية</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#faq" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>الأسئلة الشائعة</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="hover:text-brand-gold flex items-center justify-between py-1"><span>اتصل بنا</span> <i class="fas fa-chevron-left text-xs"></i></a>
+        <a id="mobileWaGroupLink" href="#" target="_blank" class="text-emerald-400 flex items-center justify-between py-2 border-t border-slate-800 mt-2">
+          <span class="flex items-center gap-2"><i class="fab fa-whatsapp"></i> انضم لمجموعتنا في الواتساب</span>
+          <i class="fas fa-external-link-alt text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-[85vh] flex items-center justify-center navy-gradient text-white overflow-hidden py-14 sm:py-20">
+    <div class="absolute inset-0 z-0">
+      <img id="heroSlideImg" src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1920&q=80" alt="كنوز العالم للسياحة" class="w-full h-full object-cover transition-opacity duration-1000 opacity-40">
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/60 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-2">
+      <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-brand-gold/40 bg-brand-gold/10 backdrop-blur-md mb-6">
+        <i class="fas fa-crown text-brand-gold text-xs sm:text-sm"></i>
+        <span class="text-[11px] sm:text-xs md:text-sm font-semibold text-brand-gold" id="heroBadge">بوابتكم لرحلات استثنائية حول العالم</span>
+      </div>
+
+      <h2 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 leading-tight max-w-4xl mx-auto" id="heroTitle">
+        اكتشف كنوز العالم مع
+        <span class="gold-text-gradient block mt-2">وكالة كنوز العالم للسفر والسياحة</span>
+      </h2>
+      <p class="text-slate-300 text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-light" id="heroSubtitle">
+        نقدم لك تجربة سياحية متكاملة؛ أفضل برامج العمرة المتميزة، استخراج جميع أنواع التأشيرات الدولية، حجوزات تذاكر الطيران، وأفخم الفنادق بضمان أعلى معايير الجودة والراحة.
+      </p>
+
+      <!-- Quick Search Form -->
+      <div class="max-w-4xl mx-auto bg-brand-lightNavy/90 backdrop-blur-xl p-4 sm:p-6 rounded-3xl border border-brand-gold/30 shadow-2xl">
+        <form onsubmit="handleQuickSearch(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-right">
+          <div>
+            <label class="block text-xs font-semibold text-brand-gold mb-1"><i class="fas fa-concierge-bell ml-1"></i> نوع الخدمة</label>
+            <select id="quickService" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-brand-gold">
+              <option value="برنامج عمرة شامل">برامج العمرة الشاملة</option>
+              <option value="تأشيرة دولية">استخراج تأشيرة</option>
+              <option value="حجز تذاكر طيران">حجز طيران</option>
+              <option value="حجز فندق">حجز فنادق ومنتجعات</option>
+              <option value="بكج سياحي متكامل">بكج سياحي متكامل</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-brand-gold mb-1"><i class="fas fa-map-marker-alt ml-1"></i> الوجهة المطلوبة</label>
+            <input type="text" id="quickDest" placeholder="مثال: مكة، إسطنبول، دبي..." class="w-full bg-brand-navy border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-gold">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-brand-gold mb-1"><i class="fas fa-calendar-alt ml-1"></i> موعد السفر التقريبي</label>
+            <input type="date" id="quickDate" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-brand-gold">
+          </div>
+          <div class="flex items-end">
+            <button type="submit" class="w-full gold-gradient text-brand-dark font-bold py-2.5 rounded-xl hover:shadow-lg transition flex items-center justify-center gap-2 text-xs h-[42px]">
+              <i class="fas fa-search"></i> <span>متابعة الحجز</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Features Trust -->
+      <div class="mt-10 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-slate-300 text-[11px] sm:text-xs">
+        <div class="flex items-center justify-center gap-2 bg-brand-navy/60 backdrop-blur py-2.5 px-3 rounded-xl border border-slate-800">
+          <i class="fas fa-shield-alt text-brand-gold text-base"></i> <span>حجوزات مؤكدة</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 bg-brand-navy/60 backdrop-blur py-2.5 px-3 rounded-xl border border-slate-800">
+          <i class="fas fa-tags text-brand-gold text-base"></i> <span>عروض تنافسية</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 bg-brand-navy/60 backdrop-blur py-2.5 px-3 rounded-xl border border-slate-800">
+          <i class="fas fa-headset text-brand-gold text-base"></i> <span>دعم متواصل 24/7</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 bg-brand-navy/60 backdrop-blur py-2.5 px-3 rounded-xl border border-slate-800">
+          <i class="fas fa-passport text-brand-gold text-base"></i> <span>سرعة إصدار التأشيرات</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW: WHATSAPP GROUP DEDICATED PROMOTIONAL BANNER -->
+  <section class="bg-gradient-to-r from-emerald-950 via-brand-navy to-emerald-900 border-y border-emerald-500/40 py-5 text-white shadow-xl relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+      <div class="flex items-center gap-3.5 sm:gap-4 text-center md:text-right">
+        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-500/20 border-2 border-emerald-400 text-emerald-400 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-lg shadow-emerald-500/20">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <div>
+          <h3 class="text-sm sm:text-base md:text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2">
+            <span>انضم لمجموعة عروض كنوز العالم على واتساب</span>
+            <span class="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">حصري</span>
+          </h3>
+          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">
+            احصل أولاً بأول على باقات العمرة المخفضة، عروض تذاكر الطيران، وأخبار التأشيرات المحدثة مباشرة عبر هاتفك.
+          </p>
+        </div>
+      </div>
+      <div class="shrink-0">
+        <a id="ctaWaGroupBtn" href="#" target="_blank" class="bg-emerald-500 hover:bg-emerald-400 text-brand-dark px-6 py-3 rounded-2xl font-black text-xs sm:text-sm shadow-xl hover:shadow-emerald-500/30 transition flex items-center gap-2 transform hover:scale-105">
+          <i class="fas fa-users text-base"></i>
+          <span>انضم للمجموعة الآن مجاناً</span>
+          <i class="fas fa-arrow-left text-xs mr-1"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+        <div class="relative order-2 lg:order-1">
+          <div class="relative mx-auto max-w-md lg:max-w-none">
+            <img id="aboutImg" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80" alt="عن كنوز العالم" class="rounded-3xl shadow-2xl object-cover w-full h-[320px] sm:h-[420px] border-4 border-slate-100">
+            <div class="absolute -bottom-5 -right-5 bg-brand-navy text-white p-5 rounded-3xl border-2 border-brand-gold shadow-2xl hidden sm:block max-w-[220px]">
+              <div class="flex items-center gap-2.5 mb-1.5">
+                <i class="fas fa-award text-2xl text-brand-gold"></i>
+                <span class="text-2xl font-black text-brand-gold">100%</span>
+              </div>
+              <p class="text-[11px] text-slate-300 font-medium">التزام تام بأعلى معايير المصداقية والرعاية في كافة رحلاتنا</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2">
+          <div class="inline-flex items-center gap-2 text-brand-darkGold font-bold text-xs uppercase tracking-widest bg-amber-50 px-3 py-1.5 rounded-full mb-3">
+            <i class="fas fa-compass"></i> <span>من نحن</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-navy mb-5 leading-tight" id="aboutHeading">
+            وكالة كنوز العالم للسفر والسياحة .. رفيقكم الدائم لرحلة لا تُنسى
+          </h2>
+          <p class="text-slate-600 leading-relaxed mb-6 text-xs sm:text-sm md:text-base font-normal text-justify" id="aboutText">
+            تأسست وكالة كنوز العالم للسفر والسياحة لتكون خياركم الأول والموثوق في تنظيم الرحلات السياحية الشاملة وبرامج العمرة الفاخرة وتسهيل إصدار التأشيرات لجميع أنحاء العالم. نفتخر بفريق عمل خبير يسهر على تلبية رغباتكم بأدق التفاصيل وبأعلى مستويات الاحترافية.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8">
+            <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+              <i class="fas fa-kaaba text-brand-gold text-lg sm:text-xl mt-1"></i>
+              <div>
+                <h4 class="font-bold text-xs sm:text-sm text-brand-navy">خبرة متخصصة في العمرة</h4>
+                <p class="text-[11px] text-slate-500">توفير أرقى الفنادق القريبة من الحرمين والمواصلات الخاصة.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+              <i class="fas fa-bolt text-brand-gold text-lg sm:text-xl mt-1"></i>
+              <div>
+                <h4 class="font-bold text-xs sm:text-sm text-brand-navy">معاملات تأشيرات فورية</h4>
+                <p class="text-[11px] text-slate-500">إشراف ومتابعة دقيقة على كافة متطلبات السفارات والجهات الرسمية.</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <a href="#contact" class="gold-gradient text-brand-dark px-6 py-3 rounded-xl font-bold text-xs sm:text-sm hover:shadow-lg transition">
+              <span>تحدث مع مستشار السفر</span>
+            </a>
+            <a href="tel:+966530963551" class="border border-slate-300 text-slate-700 px-5 py-3 rounded-xl font-bold text-xs sm:text-sm hover:bg-slate-100 transition flex items-center gap-2">
+              <i class="fas fa-phone-alt text-brand-gold"></i>
+              <span>اتصال مباشر</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="py-16 sm:py-20 bg-slate-50 border-y border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <span class="text-brand-darkGold font-bold text-xs uppercase tracking-wider bg-amber-100/60 px-3 py-1 rounded-full">خدمات متكاملة</span>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-navy mt-3">خدماتنا المتميزة للمسافرين</h2>
+        <p class="text-slate-500 text-xs sm:text-sm mt-2">حلول سياحية راقية صممت خصيصاً لتمنحك أقصى درجات الراحة وراحة البال.</p>
+      </div>
+      <div id="servicesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
+    </div>
+  </section>
+
+  <!-- Special Offers Section -->
+  <section id="offers" class="py-16 sm:py-20 navy-gradient text-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 sm:gap-6">
+        <div>
+          <span class="text-brand-gold font-bold text-xs uppercase tracking-wider bg-brand-gold/10 px-3 py-1 rounded-full border border-brand-gold/30">عروض مميزة</span>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mt-3 gold-text-gradient">أحدث عروض وخصومات السفر</h2>
+          <p class="text-slate-400 text-xs sm:text-sm mt-2">اغتنم الفرصة الآن واستفد من الباقات المخفضة ذات المقاعد المحدودة.</p>
+        </div>
+        <div class="bg-brand-lightNavy px-4 py-2.5 rounded-2xl border border-brand-gold/30 flex items-center gap-3 self-start md:self-auto">
+          <div class="text-brand-gold text-xl"><i class="fas fa-stopwatch animate-pulse"></i></div>
+          <div>
+            <div class="text-[10px] sm:text-[11px] text-slate-400">ينتهي العرض الخاص خلال:</div>
+            <div id="sectionTimer" class="font-mono text-xs sm:text-sm font-bold text-white tracking-widest mt-0.5">
+              03 يوم : 14 ساعة : 45 دقيقة
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="offersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
+    </div>
+  </section>
+
+  <!-- Destinations Section -->
+  <section id="destinations" class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-4">
+        <div>
+          <span class="text-brand-darkGold font-bold text-xs uppercase tracking-wider bg-amber-50 px-3 py-1 rounded-full">وجهات لا تُنسى</span>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-navy mt-2">أشهر الوجهات السياحية المختارة</h2>
+          <p class="text-slate-500 text-xs sm:text-sm mt-1">برامج سياحية متكاملة تُصمم خصيصاً على حسب رغبتكم وميزانيتكم.</p>
+        </div>
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap gap-1.5 sm:gap-2 text-xs font-semibold" id="destinationFilterGroup">
+          <button onclick="filterDestinations('all')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-brand-navy text-white transition active-filter">الكل</button>
+          <button onclick="filterDestinations('ديني')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">عمرة وزيارة</button>
+          <button onclick="filterDestinations('عربي')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">وجهات عربية</button>
+          <button onclick="filterDestinations('دولي')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">وجهات دولية</button>
+        </div>
+      </div>
+      <div id="destinationsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"></div>
+    </div>
+  </section>
+
+  <!-- Umrah Section -->
+  <section id="umrah" class="py-16 sm:py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
+        <span class="text-brand-darkGold font-bold text-xs uppercase tracking-wider bg-amber-100/60 px-3 py-1 rounded-full">رحلات الإيمان</span>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-navy mt-3">برامج العمرة والزيارة الشريفة</h2>
+        <p class="text-slate-500 text-xs sm:text-sm mt-2">باقات متكاملة تضمن لكم الراحة والسكينة مع أرقى الفنادق والمواصلات الخاصة.</p>
+      </div>
+      <div id="umrahContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8"></div>
+    </div>
+  </section>
+
+  <!-- Visas Section -->
+  <section id="visas" class="py-16 sm:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div class="lg:col-span-5">
+          <span class="text-brand-darkGold font-bold text-xs uppercase tracking-wider bg-amber-50 px-3 py-1 rounded-full">إنجاز فوري</span>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-navy mt-3 leading-tight">
+            تسهيل واستخراج كافة التأشيرات الدولية
+          </h2>
+          <p class="text-slate-600 text-xs sm:text-sm mt-3 leading-relaxed">
+            يقوم خبراؤنا بتجهيز ملفات التأشيرات لمختلف السفارات وحجز المواعيد وتوفير التأمين المعتمد لتأشيرات السعودية (عمرة وزيارة)، الإمارات، تركيا، مصر، دول الشنغن وجميع الدول الآسيوية والأوروبية.
+          </p>
+          <div class="mt-5 space-y-2.5 text-xs sm:text-sm text-slate-700">
+            <div class="flex items-center gap-2 font-medium">
+              <i class="fas fa-check-circle text-emerald-500"></i> <span>تدقيق ومراجعة الوثائق لتفادي أي رفض</span>
+            </div>
+            <div class="flex items-center gap-2 font-medium">
+              <i class="fas fa-check-circle text-emerald-500"></i> <span>حجز المواعيد الرسمية وتعبئة الأبلكيشن</span>
+            </div>
+            <div class="flex items-center gap-2 font-medium">
+              <i class="fas fa-check-circle text-emerald-500"></i> <span>إصدار وثائق التأمين وحجوزات الطيران والفنادق</span>
+            </div>
+          </div>
+          <div class="mt-7">
+            <a href="#booking" class="gold-gradient text-brand-dark px-6 py-3 rounded-xl font-bold text-xs sm:text-sm inline-flex items-center gap-2 hover:shadow-lg transition">
+              <i class="fas fa-passport"></i> <span>طلب استخراج تأشيرة</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div id="visasContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Booking Form Section -->
+  <section id="booking" class="py-16 sm:py-20 navy-gradient text-white relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-8 sm:mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-bold mb-3">
+          <i class="fas fa-plane"></i> <span>حجز مباشر وفوري</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold gold-text-gradient">نموذج حجز رحلة / خدمة سياحية</h2>
+        <p class="text-slate-300 text-xs sm:text-sm mt-2">يرجى كتابة التفاصيل وسيتواصل معكم فريق وكالة كنوز العالم فوراً لتأكيد الحجز.</p>
+      </div>
+
+      <div class="bg-brand-lightNavy/90 backdrop-blur-xl p-5 sm:p-8 md:p-10 rounded-3xl border border-brand-gold/30 shadow-2xl">
+        <form onsubmit="handleBookingSubmit(event)" id="mainBookingForm" class="space-y-4 sm:space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5"><i class="fas fa-user text-brand-gold ml-1"></i> الاسم الكامل *</label>
+              <input type="text" id="custName" required placeholder="الاسم ثلاثي" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-brand-gold">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5"><i class="fas fa-phone text-brand-gold ml-1"></i> رقم الهاتف / واتساب *</label>
+              <input type="tel" id="custPhone" required placeholder="مثال: +966530963551" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-brand-gold" dir="ltr">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5"><i class="fas fa-concierge-bell text-brand-gold ml-1"></i> الخدمة المطلوبة *</label>
+              <select id="custService" required class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-brand-gold">
+                <option value="برنامج عمرة شامل">برنامج عمرة شامل</option>
+                <option value="استخراج تأشيرة">استخراج تأشيرة دولية</option>
+                <option value="حجز تذاكر طيران">حجز تذاكر طيران</option>
+                <option value="حجز فندق أو منتجع">حجز فندق أو منتجع</option>
+                <option value="بكج سياحي عائلي">بكج سياحي عائلي متكامل</option>
+                <option value="خدمة سياحية أخرى">خدمة أخرى</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5"><i class="fas fa-location-arrow text-brand-gold ml-1"></i> الوجهة أو الدولة المطلوبة *</label>
+              <input type="text" id="custDest" required placeholder="مثال: مكة، تركيا، دبي..." class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-brand-gold">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5"><i class="fas fa-users text-brand-gold ml-1"></i> عدد المسافرين</label>
+              <input type="number" id="custTravelers" min="1" value="1" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-brand-gold">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5"><i class="fas fa-calendar-alt text-brand-gold ml-1"></i> تاريخ الذهاب التقديري</label>
+              <input type="date" id="custDepDate" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-brand-gold">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5"><i class="fas fa-comment-dots text-brand-gold ml-1"></i> ملاحظات أو متطلبات خاصة</label>
+              <textarea id="custNotes" rows="3" placeholder="أدخل أي تفاصيل إضافية تفضلها (تصنيف الفندق، عدد الغرف، إلخ)..." class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-brand-gold"></textarea>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" id="btnSubmitBooking" class="w-full gold-gradient text-brand-dark py-3.5 sm:py-4 rounded-xl font-extrabold text-xs sm:text-sm md:text-base shadow-xl hover:opacity-95 transition flex items-center justify-center gap-2 sm:gap-3">
+              <i class="fas fa-paper-plane text-lg sm:text-xl text-brand-dark"></i>
+              <span>تأكيد طلب الحجز ومتابعة الإجراءات</span>
+            </button>
+            <p class="text-[10px] sm:text-[11px] text-center text-slate-400 mt-2">
+              * يتم حفظ طلبكم مباشرة وإظهار تأكيد فوري لتجهيز بيانات حجزكم.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 sm:py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 sm:mb-12">
+        <span class="text-brand-darkGold font-bold text-xs uppercase tracking-wider bg-amber-100/60 px-3 py-1 rounded-full">إجابات وتوضيحات</span>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-navy mt-3">الأسئلة الأكثر شيوعاً</h2>
+      </div>
+      <div id="faqContainer" class="space-y-3 sm:space-y-4"></div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 sm:py-20 bg-white border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+        <!-- Agency Info Column -->
+        <div class="lg:col-span-5 bg-brand-navy text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl sm:text-2xl font-black gold-text-gradient mb-1 sm:mb-2" id="contactAgencyTitle">وكالة كنوز العالم للسفر والسياحة</h3>
+            <p class="text-[11px] sm:text-xs text-slate-300 font-light mb-6 sm:mb-8">Kinooz Al-Alam For Travel & Tourism Agency</p>
+
+            <div class="space-y-4 sm:space-y-5 text-xs sm:text-sm">
+              <div class="flex items-start gap-3 sm:gap-4">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-lightNavy border border-brand-gold/30 flex items-center justify-center text-brand-gold shrink-0">
+                  <i class="fab fa-whatsapp text-base sm:text-lg"></i>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-400 font-medium">واتساب مباشر:</div>
+                  <a href="https://wa.me/249913389597" target="_blank" class="font-bold hover:text-brand-gold transition text-xs sm:text-sm" dir="ltr" id="contactWhatsApp">+249 91 338 9597</a>
+                </div>
+              </div>
+
+              <!-- Dedicated WhatsApp Group Contact Block -->
+              <div class="flex items-start gap-3 sm:gap-4 bg-emerald-950/40 p-2.5 rounded-2xl border border-emerald-500/30">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-600/30 border border-emerald-400/50 flex items-center justify-center text-emerald-400 shrink-0">
+                  <i class="fas fa-users text-base sm:text-lg"></i>
+                </div>
+                <div>
+                  <div class="text-[11px] text-emerald-300 font-medium">مجموعة عروض الواتساب:</div>
+                  <a id="contactWhatsAppGroup" href="#" target="_blank" class="font-bold text-white hover:text-emerald-300 transition text-xs sm:text-sm flex items-center gap-1">
+                    <span>انقر هنا للانضمام للمجموعة</span> <i class="fas fa-chevron-left text-[10px]"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 sm:gap-4">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-lightNavy border border-brand-gold/30 flex items-center justify-center text-brand-gold shrink-0">
+                  <i class="fas fa-phone-alt text-base sm:text-lg"></i>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-400 font-medium">الاتصال الهاتفي:</div>
+                  <a href="tel:+966530963551" class="font-bold hover:text-brand-gold transition text-xs sm:text-sm" dir="ltr" id="contactPhone">+966 53 096 3551</a>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 sm:gap-4">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-lightNavy border border-brand-gold/30 flex items-center justify-center text-brand-gold shrink-0">
+                  <i class="fas fa-envelope text-base sm:text-lg"></i>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-400 font-medium">البريد الإلكتروني:</div>
+                  <a href="mailto:infokunuz26@gmail.com" class="font-bold hover:text-brand-gold transition text-xs sm:text-sm" id="contactEmail">infokunuz26@gmail.com</a>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 sm:gap-4">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brand-lightNavy border border-brand-gold/30 flex items-center justify-center text-brand-gold shrink-0">
+                  <i class="fas fa-clock text-base sm:text-lg"></i>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-400 font-medium">ساعات العمل:</div>
+                  <div class="font-bold text-slate-200 text-xs sm:text-sm">خدمة متواصلة على مدار الساعة (24/7)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-6 border-t border-slate-800 mt-6 flex items-center justify-between">
+            <span class="text-[11px] text-slate-400">تابعونا عبر منصاتنا:</span>
+            <div class="flex gap-2 text-brand-gold text-xs">
+              <!-- Facebook Managed Page Link -->
+              <a id="contactFacebook" href="#" target="_blank" title="صفحتنا على فيسبوك" class="w-8 h-8 rounded-lg bg-brand-lightNavy flex items-center justify-center hover:bg-blue-600 hover:text-white transition">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="w-8 h-8 rounded-lg bg-brand-lightNavy flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="w-8 h-8 rounded-lg bg-brand-lightNavy flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="w-8 h-8 rounded-lg bg-brand-lightNavy flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition"><i class="fab fa-telegram-plane"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Inquiry Form -->
+        <div class="lg:col-span-7 bg-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-200">
+          <h3 class="text-xl sm:text-2xl font-bold text-brand-navy mb-1.5">أرسل لنا استفسارك</h3>
+          <p class="text-slate-500 text-xs mb-5">يسعدنا تلقي استفساراتكم بخصوص البرامج والتأشيرات والرد عليها وحفظها مباشرة لدى الإدارة.</p>
+
+          <form onsubmit="handleInquirySubmit(event)" id="mainInquiryForm" class="space-y-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">الاسم الكامل *</label>
+                <input type="text" id="inqName" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-brand-gold">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">رقم الجوال *</label>
+                <input type="tel" id="inqPhone" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-brand-gold" dir="ltr">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">موضوع الاستفسار *</label>
+              <input type="text" id="inqSubject" required placeholder="مثال: استفسار عن برنامج عمرة أو فيزا" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-brand-gold">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1">تفاصيل الرسالة *</label>
+              <textarea id="inqMsg" rows="3" required class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-brand-gold"></textarea>
+            </div>
+            <button type="submit" id="btnSubmitInquiry" class="gold-gradient text-brand-dark px-7 py-3 rounded-xl font-bold text-xs sm:text-sm hover:shadow-lg transition flex items-center justify-center gap-2">
+              <i class="fas fa-paper-plane"></i> <span>إرسال الاستفسار الآن</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-brand-dark text-slate-400 text-xs py-10 sm:py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 sm:mb-10">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <div id="footerLogoThumb" class="w-8 h-8 rounded-lg gold-gradient p-0.5 flex items-center justify-center overflow-hidden">
+              <div class="w-full h-full bg-brand-navy rounded-lg flex items-center justify-center" id="footerLogoWrapper">
+                <i class="fas fa-plane-departure text-brand-gold text-sm"></i>
+              </div>
+            </div>
+            <h4 class="text-white font-bold text-base gold-text-gradient">وكالة كنوز العالم</h4>
+          </div>
+          <p class="leading-relaxed mb-4 text-slate-400 text-[11px] sm:text-xs">
+            وجهتكم المعتمدة لكافة خدمات السفر والسياحة الدولية، استخراج التأشيرات، وبرامج العمرة الفاخرة بأعلى معايير المصداقية والجودة.
+          </p>
+          <div class="flex gap-2 text-xs">
+            <a id="footerFacebook" href="#" target="_blank" class="w-7 h-7 rounded bg-brand-lightNavy text-slate-300 hover:bg-blue-600 hover:text-white flex items-center justify-center transition" title="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+            <a id="footerWaGroup" href="#" target="_blank" class="w-7 h-7 rounded bg-brand-lightNavy text-emerald-400 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition" title="قروب الواتساب"><i class="fas fa-users"></i></a>
+          </div>
+        </div>
+        <div>
+          <h5 class="text-white font-bold text-sm mb-3">روابط تهمك</h5>
+          <ul class="space-y-2 text-[11px] sm:text-xs">
+            <li><a href="#hero" class="hover:text-brand-gold transition">الصفحة الرئيسية</a></li>
+            <li><a href="#about" class="hover:text-brand-gold transition">نبذة عن الوكالة</a></li>
+            <li><a href="#services" class="hover:text-brand-gold transition">خدماتنا السياحية</a></li>
+            <li><a href="#offers" class="hover:text-brand-gold transition">العروض الحالية</a></li>
+            <li><a href="#destinations" class="hover:text-brand-gold transition">الوجهات المقترحة</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-white font-bold text-sm mb-3">أهم الخدمات</h5>
+          <ul class="space-y-2 text-[11px] sm:text-xs">
+            <li><a href="#umrah" class="hover:text-brand-gold transition">باقات العمرة والزيارة</a></li>
+            <li><a href="#visas" class="hover:text-brand-gold transition">تأشيرات الدول والسفارات</a></li>
+            <li><a href="#booking" class="hover:text-brand-gold transition">تذاكر الطيران العالمية</a></li>
+            <li><a href="#booking" class="hover:text-brand-gold transition">حجوزات الفنادق والمنتجعات</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-white font-bold text-sm mb-3">التواصل والمساندة</h5>
+          <p class="mb-2 text-[11px] sm:text-xs"><i class="fab fa-whatsapp text-emerald-400 ml-1"></i> <span dir="ltr">+249 91 338 9597</span></p>
+          <p class="mb-2 text-[11px] sm:text-xs"><i class="fas fa-phone text-brand-gold ml-1"></i> <span dir="ltr">+966 53 096 3551</span></p>
+          <p class="mb-2 text-[11px] sm:text-xs"><i class="fas fa-envelope text-brand-gold ml-1"></i> infokunuz26@gmail.com</p>
+        </div>
+      </div>
+
+      <!-- Bottom Bar with Stealth Admin Gate Icon -->
+      <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <p class="text-[11px] text-center sm:text-right">© <span id="currentYear">2026</span> جميع الحقوق محفوظة لـ <span class="text-brand-gold font-semibold">وكالة كنوز العالم للسفر والسياحة</span></p>
+        
+        <div class="flex items-center gap-3">
+          <p class="text-[10px] text-slate-500">Kinooz Al-Alam For Travel & Tourism Agency</p>
+          <!-- Stealth Admin Access Icon Button -->
+          <button onclick="openAdminAuthModal()" title="إدارة النظام" class="text-slate-700 hover:text-brand-gold transition text-xs p-1.5 rounded-lg hover:bg-slate-800">
+            <i class="fas fa-lock text-[11px]"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Action Buttons (With Group + Chat + Phone) -->
+  <div class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2.5">
+    <!-- WhatsApp Group Quick Floating Pill -->
+    <a id="floatingWaGroup" href="#" target="_blank" title="انضم لمجموعة العروض بالواتساب" class="flex items-center gap-2 px-3.5 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-2xl transition transform hover:scale-105 border border-emerald-400/50">
+      <i class="fas fa-users text-sm"></i>
+      <span class="hidden sm:inline">مجموعة العروض</span>
+    </a>
+    
+    <!-- Phone Call Floating Button -->
+    <a href="tel:+966530963551" title="اتصال مباشر" class="w-12 h-12 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center transition transform hover:scale-110">
+      <i class="fas fa-phone-alt text-lg"></i>
+    </a>
+    
+    <!-- WhatsApp Direct Chat Floating Button -->
+    <a href="https://wa.me/249913389597" target="_blank" title="محادثة واتساب مباشرة" class="w-13 h-13 p-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-2xl flex items-center justify-center transition transform hover:scale-110 pulse-btn border-2 border-white">
+      <i class="fab fa-whatsapp text-2xl sm:text-3xl"></i>
+    </a>
+  </div>
+
+  <!-- STEP 1: ADMIN LOGIN MODAL -->
+  <div id="adminAuthModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md hidden p-4">
+    <div class="bg-brand-dark border border-brand-gold/40 rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative text-white">
+      <button onclick="closeAdminAuthModal()" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-2xl gold-gradient text-brand-dark mx-auto flex items-center justify-center text-xl mb-3 shadow-lg shadow-brand-gold/30">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h3 class="text-lg font-black gold-text-gradient">بوابة الإدارة المركزية</h3>
+        <p class="text-[11px] text-slate-400 mt-1">الخطوة 1: التحقق من اسم المستخدم وكلمة المرور</p>
+      </div>
+
+      <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">اسم المستخدم</label>
+          <div class="relative">
+            <input type="text" id="admUser" required placeholder="User ID" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-gold" dir="ltr">
+            <i class="fas fa-user absolute left-3 top-3 text-slate-500 text-xs"></i>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">كلمة المرور</label>
+          <div class="relative">
+            <input type="password" id="admPass" required placeholder="••••••••" class="w-full bg-brand-navy border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand-gold" dir="ltr">
+            <i class="fas fa-key absolute left-3 top-3 text-slate-500 text-xs"></i>
+          </div>
+        </div>
+
+        <button type="submit" id="btnAdminLogin" class="w-full gold-gradient text-brand-dark py-3 rounded-xl font-bold text-xs hover:opacity-95 transition shadow-lg flex items-center justify-center gap-2 mt-2">
+          <span>متابعة للتحقق الأمني</span> <i class="fas fa-arrow-left"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- STEP 2: 2FA SECURITY PIN VERIFICATION MODAL -->
+  <div id="adminPinModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg hidden p-4">
+    <div class="bg-brand-dark border-2 border-brand-gold rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl relative text-white text-center">
+      <button onclick="closeAdminPinModal()" class="absolute top-4 left-4 text-slate-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
+
+      <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-brand-gold text-brand-gold mx-auto flex items-center justify-center text-2xl mb-4">
+        <i class="fas fa-fingerprint animate-pulse"></i>
+      </div>
+      <h3 class="text-lg font-black gold-text-gradient mb-1">رمز التحقق الأمني (2FA PIN)</h3>
+      <p class="text-xs text-slate-400 mb-6">أدخل رمز الأمان المعتمد لإكمال تسجيل الدخول إلى اللوحة</p>
+
+      <form onsubmit="handlePinVerify(event)" class="space-y-4">
+        <div>
+          <input type="password" id="admPinCode" required maxlength="12" placeholder="••••" class="w-full bg-brand-navy border-2 border-brand-gold/60 rounded-2xl px-4 py-3 text-center text-xl font-mono tracking-widest text-brand-gold focus:outline-none focus:border-brand-gold" dir="ltr" autocomplete="off" autofocus>
+          <p class="text-[10px] text-slate-500 mt-2">* الرمز المبدئي الافتراضي: <span class="text-brand-gold font-mono">2626</span> (يمكنك تغييره من اللوحة)</p>
+        </div>
+
+        <button type="submit" id="btnPinVerify" class="w-full gold-gradient text-brand-dark py-3 rounded-xl font-bold text-xs hover:opacity-95 transition shadow-lg flex items-center justify-center gap-2">
+          <i class="fas fa-unlock-alt"></i> <span>تأكيد الرمز وفتح لوحة التحكم</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- COMPREHENSIVE ADMIN CONTROL DASHBOARD -->
+  <div id="adminPanelModal" class="fixed inset-0 z-50 bg-slate-900 text-slate-100 hidden flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-brand-navy border-b border-slate-800 px-4 sm:px-6 py-3.5 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <!-- Mobile Sidebar Toggle -->
+        <button onclick="toggleAdminSidebar()" class="lg:hidden text-brand-gold hover:text-white text-xl p-1.5 rounded-lg focus:outline-none">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl gold-gradient text-brand-dark flex items-center justify-center font-black shrink-0">
+          <i class="fas fa-sliders-h text-sm sm:text-base"></i>
+        </div>
+        <div>
+          <h2 class="text-xs sm:text-base font-bold gold-text-gradient leading-tight">لوحة إدارة كنوز العالم</h2>
+          <p class="text-[10px] sm:text-[11px] text-slate-400 hidden sm:block">تحكم كامل ومزامنة سحابية مع Firebase</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="saveAllChangesToFirebase()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs px-3 sm:px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 shadow transition">
+          <i class="fas fa-cloud-upload-alt"></i> <span class="hidden sm:inline">حفظ ومزامنة سحابية</span>
+        </button>
+        <button onclick="logoutAdmin()" class="bg-rose-600/20 text-rose-300 border border-rose-500/30 hover:bg-rose-600 hover:text-white text-[11px] sm:text-xs px-3 sm:px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 transition">
+          <i class="fas fa-sign-out-alt"></i> <span>خروج</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Admin Body -->
+    <div class="flex-1 flex overflow-hidden relative">
+      <!-- Backdrop for mobile sidebar -->
+      <div id="adminSidebarBackdrop" onclick="toggleAdminSidebar()" class="fixed inset-0 bg-black/60 z-30 hidden lg:hidden"></div>
+
+      <!-- Sidebar -->
+      <aside id="adminSidebar" class="fixed lg:static inset-y-0 right-0 z-40 w-64 bg-brand-dark border-l border-slate-800 p-4 shrink-0 flex flex-col justify-between overflow-y-auto custom-scrollbar transform translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="space-y-1 text-xs font-semibold">
+          <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-800 lg:hidden">
+            <span class="text-slate-400 text-xs">أقسام اللوحة</span>
+            <button onclick="toggleAdminSidebar()" class="text-slate-400 hover:text-white text-sm"><i class="fas fa-times"></i></button>
+          </div>
+
+          <button onclick="showAdminTab('dashboard')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center justify-between bg-brand-gold text-brand-dark" data-tab="dashboard">
+            <span class="flex items-center gap-3"><i class="fas fa-chart-pie w-5"></i> <span>المؤشرات والحجوزات</span></span>
+            <span id="badgeBookingsCount" class="bg-brand-dark/20 text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+          </button>
+          
+          <button onclick="showAdminTab('inquiries')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center justify-between text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="inquiries">
+            <span class="flex items-center gap-3"><i class="fas fa-envelope-open-text w-5 text-amber-400"></i> <span>إدارة الاستفسارات والرسائل</span></span>
+            <span id="badgeInquiriesCount" class="bg-amber-500/20 text-amber-300 text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+          </button>
+
+          <button onclick="showAdminTab('settings')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="settings">
+            <i class="fas fa-palette w-5"></i> <span>الشعار والهوية والبيانات</span>
+          </button>
+          <button onclick="showAdminTab('security')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="security">
+            <i class="fas fa-shield-alt w-5"></i> <span>أمان الدخول ورمز التحقق (2FA)</span>
+          </button>
+          <button onclick="showAdminTab('hero')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="hero">
+            <i class="fas fa-home w-5"></i> <span>إدارة الواجهة (Hero)</span>
+          </button>
+          <button onclick="showAdminTab('about')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="about">
+            <i class="fas fa-info-circle w-5"></i> <span>إدارة من نحن</span>
+          </button>
+          <button onclick="showAdminTab('services')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="services">
+            <i class="fas fa-concierge-bell w-5"></i> <span>إدارة الخدمات</span>
+          </button>
+          <button onclick="showAdminTab('offers')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="offers">
+            <i class="fas fa-percent w-5"></i> <span>إدارة العروض</span>
+          </button>
+          <button onclick="showAdminTab('destinations')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="destinations">
+            <i class="fas fa-map-marked-alt w-5"></i> <span>الوجهات السياحية</span>
+          </button>
+          <button onclick="showAdminTab('umrah')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="umrah">
+            <i class="fas fa-kaaba w-5"></i> <span>برامج العمرة</span>
+          </button>
+          <button onclick="showAdminTab('visas')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="visas">
+            <i class="fas fa-passport w-5"></i> <span>إدارة التأشيرات</span>
+          </button>
+          <button onclick="showAdminTab('faq')" class="admin-tab-btn w-full text-right px-4 py-2.5 rounded-xl transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-white" data-tab="faq">
+            <i class="fas fa-question-circle w-5"></i> <span>الأسئلة الشائعة</span>
+          </button>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 text-[10px] text-slate-400 mt-4">
+          <div>حالة الاتصال: <span class="text-emerald-400 font-semibold" id="firebaseStatusIndicator">Firestore متصل</span></div>
+        </div>
+      </aside>
+
+      <!-- Main Workspace -->
+      <main class="flex-1 bg-slate-900 overflow-y-auto p-4 sm:p-6 custom-scrollbar" id="adminContentArea">
+
+        <!-- TAB 1: DASHBOARD & CRM -->
+        <div id="tab-dashboard" class="space-y-6">
+          <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+            <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 shadow">
+              <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
+                <span>طلبات الحجز</span>
+                <i class="fas fa-receipt text-brand-gold"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-black text-white" id="statTotalBookings">0</div>
+            </div>
+            <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 shadow">
+              <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
+                <span>حجوزات جديدة</span>
+                <i class="fas fa-bell text-emerald-400"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-black text-emerald-400" id="statNewBookings">0</div>
+            </div>
+            <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 shadow">
+              <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
+                <span>الاستفسارات</span>
+                <i class="fas fa-envelope text-amber-400"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-black text-amber-400" id="statTotalInquiries">0</div>
+            </div>
+            <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 shadow">
+              <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
+                <span>الخدمات</span>
+                <i class="fas fa-concierge-bell text-sky-400"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-black text-white" id="statServicesCount">0</div>
+            </div>
+            <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 shadow">
+              <div class="flex items-center justify-between text-slate-400 text-xs mb-1.5">
+                <span>الوجهات</span>
+                <i class="fas fa-plane text-purple-400"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-black text-white" id="statDestCount">0</div>
+            </div>
+          </div>
+
+          <!-- Bookings Table -->
+          <div class="bg-brand-navy rounded-2xl border border-slate-800 p-4 sm:p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-bold text-white text-sm sm:text-base">سجل طلبات الحجز المباشرة</h3>
+                <p class="text-xs text-slate-400">تحديث فوري وإمكانية متابعة العملاء والتواصل المباشر</p>
+              </div>
+              <input type="text" id="bookingSearchInput" oninput="filterBookingsTable()" placeholder="ابحث باسم العميل أو الهاتف..." class="bg-slate-800 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white focus:outline-none focus:border-brand-gold w-full sm:w-64">
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+              <table class="w-full text-right text-xs text-slate-300 min-w-[700px]">
+                <thead class="bg-slate-800/80 text-slate-400 font-semibold">
+                  <tr>
+                    <th class="p-3">الكود</th>
+                    <th class="p-3">العميل</th>
+                    <th class="p-3">الهاتف</th>
+                    <th class="p-3">الخدمة</th>
+                    <th class="p-3">الوجهة</th>
+                    <th class="p-3">العدد</th>
+                    <th class="p-3">تاريخ الذهاب</th>
+                    <th class="p-3">الحالة</th>
+                    <th class="p-3 text-center">إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="adminAllBookingsTbody" class="divide-y divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: INQUIRIES MANAGEMENT -->
+        <div id="tab-inquiries" class="space-y-6 hidden">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <div class="text-xs text-slate-400 mb-1">إجمالي الاستفسارات الواردة</div>
+                <div class="text-2xl font-black text-white" id="statInqTabTotal">0</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl">
+                <i class="fas fa-inbox"></i>
+              </div>
+            </div>
+            <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <div class="text-xs text-slate-400 mb-1">استفسارات جديدة لم يُرد عليها</div>
+                <div class="text-2xl font-black text-amber-400" id="statInqTabNew">0</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-xl">
+                <i class="fas fa-envelope"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-brand-navy rounded-2xl border border-slate-800 p-4 sm:p-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-2">
+                  <i class="fas fa-comments text-amber-400"></i>
+                  <span>سجل استفسارات ورسائل الزوار</span>
+                </h3>
+                <p class="text-xs text-slate-400">يتم تسجيل كافة رسائل واستفسارات العملاء هنا مع إمكانية الرد الفوري</p>
+              </div>
+              <input type="text" id="inquirySearchInput" oninput="filterInquiriesTable()" placeholder="ابحث في الاستفسارات..." class="bg-slate-800 border border-slate-700 px-3 py-2 rounded-xl text-xs text-white focus:outline-none focus:border-brand-gold w-full sm:w-64">
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+              <table class="w-full text-right text-xs text-slate-300 min-w-[750px]">
+                <thead class="bg-slate-800/80 text-slate-400 font-semibold">
+                  <tr>
+                    <th class="p-3">الكود</th>
+                    <th class="p-3">الاسم</th>
+                    <th class="p-3">الهاتف</th>
+                    <th class="p-3">الموضوع</th>
+                    <th class="p-3">نص الرسالة</th>
+                    <th class="p-3">التاريخ</th>
+                    <th class="p-3">الحالة</th>
+                    <th class="p-3 text-center">إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="adminAllInquiriesTbody" class="divide-y divide-slate-800"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: SETTINGS & SOCIAL LINKS MANAGER -->
+        <div id="tab-settings" class="space-y-6 hidden">
+          <div class="bg-brand-navy p-5 sm:p-6 rounded-2xl border border-slate-800 max-w-4xl">
+            <h3 class="font-bold text-white text-base sm:text-lg mb-1 gold-text-gradient">هوية الوكالة، الشعار، ومجموعات التواصل</h3>
+            <p class="text-xs text-slate-400 mb-6">يمكنك هنا تغيير رابط اللوجو ورابط مجموعة الواتساب ورابط صفحة الفيسبوك وحفظها مباشرة</p>
+
+            <form onsubmit="handleSaveSettings(event)" class="space-y-5 text-xs">
+              
+              <!-- LOGO URL & PREVIEW COMPONENT -->
+              <div class="bg-slate-800/80 border border-brand-gold/30 p-4 sm:p-5 rounded-2xl">
+                <label class="block text-brand-gold font-bold mb-2 text-xs sm:text-sm">
+                  <i class="fas fa-image ml-1"></i> رابط شعار الموقع (Logo Image URL 🔗)
+                </label>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                  <div class="md:col-span-8">
+                    <input type="url" id="setLogoUrl" oninput="previewLogoInput(this.value)" placeholder="https://example.com/logo.png" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-gold" dir="ltr">
+                    <p class="text-[11px] text-slate-400 mt-1.5">انسخ وألصق رابط مباشر لشعارك (بصيغة PNG أو JPG أو SVG شفافة).</p>
+                  </div>
+                  <div class="md:col-span-4 flex items-center justify-center gap-3">
+                    <div class="text-[11px] text-slate-400">معاينة الشعار:</div>
+                    <div class="w-16 h-16 rounded-2xl bg-brand-navy border border-brand-gold/40 flex items-center justify-center overflow-hidden p-1 shadow">
+                      <img id="adminLogoPreviewImg" src="" alt="معاينة" class="w-full h-full object-contain hidden">
+                      <i id="adminLogoPreviewFallback" class="fas fa-image text-slate-600 text-xl"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SOCIAL MEDIA & WHATSAPP GROUP CHANNELS -->
+              <div class="bg-slate-800/80 border border-emerald-500/30 p-4 sm:p-5 rounded-2xl space-y-4">
+                <h4 class="font-bold text-emerald-400 text-sm flex items-center gap-2">
+                  <i class="fas fa-share-alt"></i> <span>روابط مجموعة الواتساب وصفحة الفيسبوك</span>
+                </h4>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-slate-200 font-semibold mb-1">
+                      <i class="fab fa-whatsapp text-emerald-400 ml-1"></i> رابط الانضمام لمجموعة الواتساب (WhatsApp Group Invite)
+                    </label>
+                    <input type="url" id="setWhatsAppGroup" placeholder="https://chat.whatsapp.com/..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+                    <p class="text-[10px] text-slate-400 mt-1">يظهر هذا الرابط في زر الانضمام السريع والشريط الترويجي والأيقونات العائمة.</p>
+                  </div>
+
+                  <div>
+                    <label class="block text-slate-200 font-semibold mb-1">
+                      <i class="fab fa-facebook-f text-blue-400 ml-1"></i> رابط صفحة الفيسبوك الرسمية (Facebook Page URL)
+                    </label>
+                    <input type="url" id="setFacebookUrl" placeholder="https://facebook.com/youragency" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+                    <p class="text-[10px] text-slate-400 mt-1">يتم ربط أيقونة الفيسبوك في التذييل والتواصل بهذا الرابط فوراً.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-slate-300 font-semibold mb-1">اسم الوكالة بالعربية</label>
+                  <input type="text" id="setAgencyNameAr" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+                </div>
+                <div>
+                  <label class="block text-slate-300 font-semibold mb-1">اسم الوكالة بالإنجليزية</label>
+                  <input type="text" id="setAgencyNameEn" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+                </div>
+                <div>
+                  <label class="block text-slate-300 font-semibold mb-1">رقم الواتساب للمحادثات الفردية (بدون مسافات)</label>
+                  <input type="text" id="setWhatsApp" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+                </div>
+                <div>
+                  <label class="block text-slate-300 font-semibold mb-1">رقم الهاتف للاتصال المباشر</label>
+                  <input type="text" id="setPhone" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-slate-300 font-semibold mb-1">البريد الإلكتروني الرسمي</label>
+                  <input type="email" id="setEmail" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+                </div>
+              </div>
+
+              <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition">
+                حفظ كافة إعدادات الهوية والروابط
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TAB 3: SECURITY & 2FA PIN MANAGEMENT -->
+        <div id="tab-security" class="space-y-6 hidden">
+          <div class="bg-brand-navy p-5 sm:p-6 rounded-2xl border border-slate-800 max-w-xl">
+            <h3 class="font-bold text-white text-base mb-2 gold-text-gradient">إدارة أمان الدخول ورمز التحقق (2FA)</h3>
+            <p class="text-slate-400 text-xs mb-5">تُشفر كافة البيانات بخوارزمية SHA-256 لحماية الموقع من الاختراق، وتُحفظ سحابياً في Firebase.</p>
+
+            <form onsubmit="handleChangeAdminCredentials(event)" class="space-y-4 text-xs">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">اسم المستخدم الجديد (Username)</label>
+                <input type="text" id="secNewUser" placeholder="admin" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">كلمة المرور الجديدة (Password)</label>
+                <input type="password" id="secNewPass" placeholder="••••••••" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+              </div>
+
+              <div class="bg-slate-800/80 p-3.5 rounded-xl border border-amber-500/30">
+                <label class="block text-brand-gold font-bold mb-1">
+                  <i class="fas fa-key ml-1"></i> رمز التحقق الأمني الثاني الجديد (Security PIN 2FA)
+                </label>
+                <input type="password" id="secNewPin" placeholder="مثال: 2626" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-mono" dir="ltr">
+                <p class="text-[10px] text-slate-400 mt-1">يُطلب هذا الرمز تلقائياً بعد إدخال كلمة المرور للتحقق من هوية المشرف.</p>
+              </div>
+
+              <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition">
+                تحديث وحفظ بيانات الدخول والـ PIN
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TAB 4: HERO -->
+        <div id="tab-hero" class="space-y-6 hidden">
+          <div class="bg-brand-navy p-5 sm:p-6 rounded-2xl border border-slate-800 max-w-3xl">
+            <h3 class="font-bold text-white text-base mb-4 gold-text-gradient">إدارة الواجهة الرئيسية (Hero)</h3>
+            <form onsubmit="handleSaveHeroSettings(event)" class="space-y-4 text-xs">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">الشارة الترحيبية (Badge)</label>
+                <input type="text" id="heroFormBadge" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">العنوان الرئيسي</label>
+                <input type="text" id="heroFormTitle" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">النص التعريفي الفرعي</label>
+                <textarea id="heroFormSubtitle" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white"></textarea>
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">رابط صورة الخلفية (Image URL)</label>
+                <input type="url" id="heroFormBgImg" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+              </div>
+              <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition">
+                حفظ بيانات الواجهة
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TAB 5: ABOUT US -->
+        <div id="tab-about" class="space-y-6 hidden">
+          <div class="bg-brand-navy p-5 sm:p-6 rounded-2xl border border-slate-800 max-w-3xl">
+            <h3 class="font-bold text-white text-base mb-4 gold-text-gradient">إدارة محتوى (من نحن)</h3>
+            <form onsubmit="handleSaveAboutSettings(event)" class="space-y-4 text-xs">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">عنوان القسم</label>
+                <input type="text" id="aboutFormHeading" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">النص التفصيلي</label>
+                <textarea id="aboutFormText" rows="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white"></textarea>
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1">رابط صورة القسم</label>
+                <input type="url" id="aboutFormImg" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
+              </div>
+              <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition">
+                حفظ محتوى من نحن
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- TAB 6: SERVICES -->
+        <div id="tab-services" class="space-y-6 hidden">
+          <div class="flex items-center justify-between bg-brand-navy p-4 rounded-2xl border border-slate-800">
+            <h3 class="font-bold text-white text-sm sm:text-base">إدارة الخدمات</h3>
+            <button onclick="openAddServiceModal()" class="gold-gradient text-brand-dark px-3 sm:px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+              <i class="fas fa-plus"></i> <span>إضافة خدمة</span>
+            </button>
+          </div>
+          <div id="adminServicesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- TAB 7: OFFERS -->
+        <div id="tab-offers" class="space-y-6 hidden">
+          <div class="flex items-center justify-between bg-brand-navy p-4 rounded-2xl border border-slate-800">
+            <h3 class="font-bold text-white text-sm sm:text-base">إدارة العروض والخصومات</h3>
+            <button onclick="openAddOfferModal()" class="gold-gradient text-brand-dark px-3 sm:px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+              <i class="fas fa-plus"></i> <span>إضافة عرض</span>
+            </button>
+          </div>
+          <div id="adminOffersList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- TAB 8: DESTINATIONS -->
+        <div id="tab-destinations" class="space-y-6 hidden">
+          <div class="flex items-center justify-between bg-brand-navy p-4 rounded-2xl border border-slate-800">
+            <h3 class="font-bold text-white text-sm sm:text-base">إدارة الوجهات السياحية</h3>
+            <button onclick="openAddDestinationModal()" class="gold-gradient text-brand-dark px-3 sm:px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+              <i class="fas fa-plus"></i> <span>إضافة وجهة</span>
+            </button>
+          </div>
+          <div id="adminDestinationsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+        </div>
+
+        <!-- TAB 9: UMRAH -->
+        <div id="tab-umrah" class="space-y-6 hidden">
+          <div class="flex items-center justify-between bg-brand-navy p-4 rounded-2xl border border-slate-800">
+            <h3 class="font-bold text-white text-sm sm:text-base">إدارة برامج العمرة</h3>
+            <button onclick="openAddUmrahModal()" class="gold-gradient text-brand-dark px-3 sm:px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+              <i class="fas fa-plus"></i> <span>إضافة برنامج</span>
+            </button>
+          </div>
+          <div id="adminUmrahList" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- TAB 10: VISAS -->
+        <div id="tab-visas" class="space-y-6 hidden">
+          <div class="flex items-center justify-between bg-brand-navy p-4 rounded-2xl border border-slate-800">
+            <h3 class="font-bold text-white text-sm sm:text-base">إدارة التأشيرات الدولية</h3>
+            <button onclick="openAddVisaModal()" class="gold-gradient text-brand-dark px-3 sm:px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+              <i class="fas fa-plus"></i> <span>إضافة تأشيرة</span>
+            </button>
+          </div>
+          <div id="adminVisasList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- TAB 11: FAQ -->
+        <div id="tab-faq" class="space-y-6 hidden">
+          <div class="flex items-center justify-between bg-brand-navy p-4 rounded-2xl border border-slate-800">
+            <h3 class="font-bold text-white text-sm sm:text-base">إدارة الأسئلة الشائعة</h3>
+            <button onclick="openAddFaqModal()" class="gold-gradient text-brand-dark px-3 sm:px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+              <i class="fas fa-plus"></i> <span>إضافة سؤال</span>
+            </button>
+          </div>
+          <div id="adminFaqList" class="space-y-3"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- CRUD DYNAMIC MODAL -->
+  <div id="itemCrudModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm hidden p-4">
+    <div class="bg-brand-navy border border-slate-700 rounded-3xl max-w-lg w-full p-5 sm:p-6 text-white text-xs max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+        <h4 id="crudModalTitle" class="text-sm font-bold gold-text-gradient">إضافة عنصر</h4>
+        <button onclick="closeItemCrudModal()" class="text-slate-400 hover:text-white text-base"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="genericCrudForm" onsubmit="handleCrudFormSubmit(event)" class="space-y-3">
+        <input type="hidden" id="crudItemType">
+        <input type="hidden" id="crudItemId">
+
+        <div id="crudFormFieldsContainer" class="space-y-3"></div>
+
+        <div class="pt-3 flex gap-2">
+          <button type="submit" class="flex-1 gold-gradient text-brand-dark py-2.5 rounded-xl font-bold text-xs">حفظ التعديلات</button>
+          <button type="button" onclick="closeItemCrudModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 rounded-xl font-semibold">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT & LOGIC ENGINE                  -->
+  <!-- ========================================== -->
+  <script>
+    /* -------------------------------------------------------------
+       1. ANTI-INSPECT PROTECTION SHIELD
+       ------------------------------------------------------------- */
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    document.onkeydown = function(e) {
+      if (e.keyCode === 123) return false; // F12
+      if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
+      if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) return false;
+      if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67 || e.keyCode === 85)) return false;
+    };
+
+    /* -------------------------------------------------------------
+       2. SECURE HASHING ALGORITHM (SHA-256)
+       ------------------------------------------------------------- */
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    /* -------------------------------------------------------------
+       3. DEFAULT INITIAL DATA SEED (WITH WHATSAPP GROUP & FACEBOOK)
+       ------------------------------------------------------------- */
+    const DEFAULT_DATA = {
+      hero: {
+        badge: "بوابتكم لرحلات استثنائية حول العالم",
+        title: "اكتشف كنوز العالم مع وكالة كنوز العالم للسفر والسياحة",
+        subtitle: "نقدم لك تجربة سياحية متكاملة؛ أفضل برامج العمرة المتميزة، استخراج جميع أنواع التأشيرات الدولية، حجوزات تذاكر الطيران، وأفخم الفنادق بضمان أعلى معايير الجودة والراحة.",
+        bgImg: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1920&q=80"
+      },
+      about: {
+        heading: "وكالة كنوز العالم للسفر والسياحة .. رفيقكم الدائم لرحلة لا تُنسى",
+        text: "تأسست وكالة كنوز العالم للسفر والسياحة لتكون خياركم الأول والموثوق في تنظيم الرحلات السياحية الشاملة وبرامج العمرة الفاخرة وتسهيل إصدار التأشيرات لجميع أنحاء العالم. نفتخر بفريق عمل خبير يسهر على تلبية رغباتكم بأدق التفاصيل وبأعلى مستويات الاحترافية.",
+        img: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80"
+      },
+      settings: {
+        agencyNameAr: "وكالة كنوز العالم للسفر والسياحة",
+        agencyNameEn: "Kinooz Al-Alam For Travel & Tourism Agency",
+        whatsApp: "+249913389597",
+        whatsAppGroup: "https://chat.whatsapp.com/invite_code_here",
+        facebookUrl: "https://facebook.com",
+        phone: "+966530963551",
+        email: "infokunuz26@gmail.com",
+        logoUrl: ""
+      },
+      services: [
+        { id: "s1", title: "برامج العمرة والزيارة", desc: "باقات متكاملة تشمل الطيران، الفنادق القريبة من الحرمين والمواصلات الخاصة.", icon: "fa-kaaba", active: true },
+        { id: "s2", title: "استخراج التأشيرات الدولية", desc: "معالجة وتسهيل كافة تأشيرات السعودية، الشنغن، الإمارات، وجميع الدول بدقة وسرعة.", icon: "fa-passport", active: true },
+        { id: "s3", title: "حجز تذاكر الطيران", desc: "أفضل عروض شركات الطيران العالمية والمحلية مع مرونة في التعديل ومقاعد مؤكدة.", icon: "fa-plane-departure", active: true },
+        { id: "s4", title: "حجوزات الفنادق والمنتجعات", desc: "حجز أفخم الفنادق والمنتجعات العالمية بأسعار تفضيلية وخيارات متعددة.", icon: "fa-hotel", active: true },
+        { id: "s5", title: "البكجات السياحية المتكاملة", desc: "برامج سياحية متكاملة للأفراد والعائلات وشهر العسل مع جولات إرشادية مميزة.", icon: "fa-map-marked-alt", active: true },
+        { id: "s6", title: "تأمين السفر والاستشارات", desc: "وثائق تأمين سفر دولية معتمدة ومتوافقة مع شروط التأشيرات واستشارات مجانية.", icon: "fa-shield-alt", active: true }
+      ],
+      offers: [
+        { id: "o1", title: "عرض العمرة المتميزة", desc: "إقامة 7 ليالٍ في مكة بفندق 5 نجوم + 3 ليالٍ بالمدينة مع التأشيرة والطيران.", discount: "خصم خاص", img: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80", expiry: "2026-12-31", active: true },
+        { id: "o2", title: "روائع إسطنبول وطرابزون", desc: "بكج 8 أيام شامل تذاكر الطيران والإقامة مع وجبة الإفطار وجولات سياحية كاملة.", discount: "عرض حصري", img: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80", expiry: "2026-11-20", active: true },
+        { id: "o3", title: "سياحة دبي الساحرة", desc: "إقامة 5 أيام في أرقى فنادق دبي مع تذاكر المعالم والرحلات الصحراوية الممتعة.", discount: "باقة مخفضة", img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80", expiry: "2026-10-30", active: true }
+      ],
+      destinations: [
+        { id: "d1", title: "مكة المكرمة والمدينة", country: "المملكة العربية السعودية", cat: "ديني", note: "عمرة وزيارة مريحة", img: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=600&q=80", active: true },
+        { id: "d2", title: "إسطنبول وطرابزون", country: "تركيا", cat: "دولي", note: "طبيعة وتاريخ", img: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=600&q=80", active: true },
+        { id: "d3", title: "دبي وأبوظبي", country: "الإمارات العربية المتحدة", cat: "عربي", note: "تسوق وفخامة", img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80", active: true },
+        { id: "d4", title: "كوالالمبور وسيلانجور", country: "ماليزيا", cat: "دولي", note: "عطلات عائلية", img: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=600&q=80", active: true }
+      ],
+      umrah: [
+        { id: "u1", name: "برنامج العمرة الاقتصادي", duration: "10 أيام", makkahHotel: "فندق 3 نجوم قريب مع مواصلات الحرم", madinahHotel: "فندق مركزي بالمدينة المنورة", img: "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=600&q=80", active: true },
+        { id: "u2", name: "برنامج العمرة المميز (VIP)", duration: "14 يوماً", makkahHotel: "فندق 5 نجوم مباشر على ساحة الحرم", madinahHotel: "فندق 5 نجوم بالمنطقة المركزية الأولى", img: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=600&q=80", active: true },
+        { id: "u3", name: "برنامج عطلات نهاية الأسبوع", duration: "4 أيام", makkahHotel: "إقامة فاخرة مطلة على الحرم", madinahHotel: "خيارات حسب الطلب", img: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=600&q=80", active: true }
+      ],
+      visas: [
+        { id: "v1", country: "تأشيرات السعودية (عمرة / زيارة / سياحة)", time: "خلال 24-48 ساعة", req: "جواز سفر ساري المفعول + صورة شخصية", active: true },
+        { id: "v2", country: "تأشيرة الإمارات العربية المتحدة", time: "خلال 24 ساعة", req: "صورة جواز السفر واضحة + صورة شخصية", active: true },
+        { id: "v3", country: "تأشيرة تركيا الإلكترونية والملصق", time: "من 3 إلى 7 أيام", req: "جواز السفر وتجهيز متطلبات السفارة", active: true },
+        { id: "v4", country: "تأشيرات دول الشنغن الأوروبية", time: "تجهيز وتحديد المواعيد", req: "كشف حساب بنكي وتجهيز ملف السفارة بالكامل", active: true }
+      ],
+      faq: [
+        { id: "q1", q: "ما هي شروط ومتطلبات استخراج تأشيرة العمرة؟", a: "جواز سفر ساري المفعول لمدة لا تقل عن 6 أشهر وصورة شخصية، ويتولى فريق كنوز العالم إتمام كافة الإجراءات الإلكترونية والتأمين الطبي مباشرة." },
+        { id: "q2", q: "كيف يتم تأكيد الحجز بعد إرسال النموذج من الموقع؟", a: "بمجرد إرسال الطلب، يُحفظ في النظام ويتم فتح محادثة WhatsApp مباشرة لموظف الحجوزات لتزويدكم بالتفاصيل وسند الحجز." },
+        { id: "q3", q: "هل تقدمون عروضاً خاصة للمجموعات والرحلات العائلية؟", a: "نعم، نقدم برامج سياحية وعمرة مخصصة للعائلات والمجموعات مع تخفيضات خاصة ومرونة في اختيار الفنادق والمواصلات." }
+      ],
+      bookings: [],
+      inquiries: []
+    };
+
+    let appState = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    let db = null;
+    let isFirebaseReady = false;
+
+    /* -------------------------------------------------------------
+       4. FIREBASE CONFIGURATION
+       ------------------------------------------------------------- */
+    const firebaseConfig = {
+      apiKey: "AIzaSyCowbUjEOvXySeqw3YiuSG7VXUL7sUSfAE",
+      authDomain: "kinooz-al-alam-travel.firebaseapp.com",
+      databaseURL: "https://kinooz-al-alam-travel-default-rtdb.firebaseio.com",
+      projectId: "kinooz-al-alam-travel",
+      storageBucket: "kinooz-al-alam-travel.firebasestorage.app",
+      messagingSenderId: "500383556875",
+      appId: "1:500383556875:web:6d2dbb5cd46fa4acba6e0e"
+    };
+
+    function initFirebase() {
+      try {
+        if (window.firebase && !firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+          db = firebase.firestore();
+          isFirebaseReady = true;
+          document.getElementById('firebaseStatusIndicator').innerText = "متصل وسحابي";
+          listenToFirestore();
+        }
+      } catch (e) {
+        console.warn("Using offline storage:", e);
+        document.getElementById('firebaseStatusIndicator').innerText = "وضع التخزين المحلي";
+      }
+    }
+
+    function loadLocalState() {
+      const stored = localStorage.getItem('kinooz_app_state');
+      if (stored) {
+        try { 
+          const parsed = JSON.parse(stored);
+          Object.assign(appState, parsed);
+          if (!appState.inquiries) appState.inquiries = [];
+          if (!appState.settings.whatsAppGroup) appState.settings.whatsAppGroup = "https://chat.whatsapp.com/";
+          if (!appState.settings.facebookUrl) appState.settings.facebookUrl = "https://facebook.com/";
+        } catch(e){}
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('kinooz_app_state', JSON.stringify(appState));
+    }
+
+    function listenToFirestore() {
+      if (!isFirebaseReady || !db) return;
+      try {
+        db.collection("agency_content").doc("site_data").onSnapshot(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            Object.assign(appState, data);
+            saveState();
+            renderAll();
+          }
+        }, err => console.log("Firestore sync notice:", err.message));
+
+        db.collection("bookings").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+          const list = [];
+          snapshot.forEach(d => list.push({ id: d.id, ...d.data() }));
+          if (list.length > 0) {
+            appState.bookings = list;
+            saveState();
+            renderAdminBookings();
+            updateStats();
+          }
+        }, err => console.log("Bookings snapshot notice:", err.message));
+
+        db.collection("inquiries").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+          const inqList = [];
+          snapshot.forEach(d => inqList.push({ id: d.id, ...d.data() }));
+          if (inqList.length > 0) {
+            appState.inquiries = inqList;
+            saveState();
+            renderAdminInquiries();
+            updateStats();
+          }
+        }, err => console.log("Inquiries snapshot notice:", err.message));
+      } catch(e){}
+    }
+
+    async function saveAllChangesToFirebase() {
+      saveState();
+      if (!isFirebaseReady || !db) {
+        showToast("تم الحفظ محلياً في المتصفح بنجاح!", "info");
+        return;
+      }
+      try {
+        await db.collection("agency_content").doc("site_data").set({
+          hero: appState.hero,
+          about: appState.about,
+          settings: appState.settings,
+          services: appState.services,
+          offers: appState.offers,
+          destinations: appState.destinations,
+          umrah: appState.umrah,
+          visas: appState.visas,
+          faq: appState.faq,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        showToast("تمت مزامنة كافة بيانات المنصة والشعار في Firebase!", "success");
+      } catch(err) {
+        showToast("خطأ في المزامنة السحابية: " + err.message, "error");
+      }
+    }
+
+    /* -------------------------------------------------------------
+       5. FRONTEND RENDERING
+       ------------------------------------------------------------- */
+    function renderAll() {
+      applyHeroAndAbout();
+      applySettings();
+      renderServices();
+      renderOffers();
+      renderDestinations();
+      renderUmrah();
+      renderVisas();
+      renderFaq();
+      updateStats();
+    }
+
+    function applyHeroAndAbout() {
+      if (appState.hero) {
+        document.getElementById('heroBadge').innerText = appState.hero.badge;
+        document.getElementById('heroTitle').innerHTML = `${appState.hero.title.replace("وكالة كنوز العالم للسفر والسياحة", "")} <span class="gold-text-gradient block mt-2">وكالة كنوز العالم للسفر والسياحة</span>`;
+        document.getElementById('heroSubtitle').innerText = appState.hero.subtitle;
+        if (appState.hero.bgImg) document.getElementById('heroSlideImg').src = appState.hero.bgImg;
+      }
+      if (appState.about) {
+        document.getElementById('aboutHeading').innerText = appState.about.heading;
+        document.getElementById('aboutText').innerText = appState.about.text;
+        if (appState.about.img) document.getElementById('aboutImg').src = appState.about.img;
+      }
+    }
+
+    function applySettings() {
+      const s = appState.settings;
+      if (!s) return;
+      document.getElementById('navAgencyName').innerText = s.agencyNameAr;
+      document.getElementById('navAgencySub').innerText = s.agencyNameEn;
+      document.getElementById('contactAgencyTitle').innerText = s.agencyNameAr;
+      document.getElementById('contactPhone').innerText = s.phone;
+      document.getElementById('contactPhone').href = `tel:${s.phone.replace(/\s+/g, '')}`;
+      document.getElementById('contactWhatsApp').innerText = s.whatsApp;
+      document.getElementById('contactWhatsApp').href = `https://wa.me/${s.whatsApp.replace(/\D/g, '')}`;
+      document.getElementById('contactEmail').innerText = s.email;
+      document.getElementById('contactEmail').href = `mailto:${s.email}`;
+
+      // WHATSAPP GROUP DYNAMIC LINKS
+      const waGroupUrl = s.whatsAppGroup || "#";
+      const waGroupElements = ['ctaWaGroupBtn', 'floatingWaGroup', 'topBarWaGroup', 'mobileWaGroupLink', 'contactWhatsAppGroup', 'footerWaGroup'];
+      waGroupElements.forEach(elemId => {
+        const el = document.getElementById(elemId);
+        if (el) el.href = waGroupUrl;
+      });
+
+      // FACEBOOK PAGE DYNAMIC LINKS
+      const fbUrl = s.facebookUrl || "#";
+      const fbElements = ['contactFacebook', 'footerFacebook'];
+      fbElements.forEach(elemId => {
+        const el = document.getElementById(elemId);
+        if (el) el.href = fbUrl;
+      });
+
+      // DYNAMIC LOGO URL RENDERING
+      const logoWrapper = document.getElementById('agencyLogoWrapper');
+      const footerLogoWrapper = document.getElementById('footerLogoWrapper');
+
+      if (s.logoUrl && s.logoUrl.trim().length > 5) {
+        logoWrapper.innerHTML = `<img src="${s.logoUrl}" alt="شعار الوكالة" class="w-full h-full object-contain p-0.5">`;
+        if (footerLogoWrapper) {
+          footerLogoWrapper.innerHTML = `<img src="${s.logoUrl}" alt="شعار الوكالة" class="w-full h-full object-contain p-0.5">`;
+        }
+      } else {
+        logoWrapper.innerHTML = `<i class="fas fa-plane-departure text-brand-gold text-xl sm:text-2xl"></i>`;
+        if (footerLogoWrapper) {
+          footerLogoWrapper.innerHTML = `<i class="fas fa-plane-departure text-brand-gold text-sm"></i>`;
+        }
+      }
+    }
+
+    function previewLogoInput(url) {
+      const img = document.getElementById('adminLogoPreviewImg');
+      const fallback = document.getElementById('adminLogoPreviewFallback');
+      if (url && url.trim().length > 5) {
+        img.src = url;
+        img.classList.remove('hidden');
+        fallback.classList.add('hidden');
+      } else {
+        img.classList.add('hidden');
+        fallback.classList.remove('hidden');
+      }
+    }
+
+    function renderServices() {
+      const c = document.getElementById('servicesContainer');
+      const list = appState.services.filter(x => x.active !== false);
+      c.innerHTML = list.map(s => `
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-md hover:shadow-2xl transition duration-300 flex flex-col justify-between group">
+          <div>
+            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-50 group-hover:bg-brand-gold text-brand-darkGold group-hover:text-brand-dark flex items-center justify-center text-xl sm:text-2xl mb-5 transition duration-300 shadow-inner">
+              <i class="fas ${s.icon || 'fa-plane'}"></i>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold text-brand-navy mb-2 sm:mb-3">${s.title}</h3>
+            <p class="text-slate-500 text-xs sm:text-sm leading-relaxed mb-6">${s.desc}</p>
+          </div>
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[11px] sm:text-xs font-bold text-emerald-600">خدمة معتمدة</span>
+            <a href="#booking" onclick="prefillBooking('${s.title}')" class="text-xs font-bold text-slate-700 hover:text-brand-darkGold flex items-center gap-1 group-hover:translate-x-[-4px] transition">
+              <span>طلب الخدمة</span> <i class="fas fa-arrow-left text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderOffers() {
+      const c = document.getElementById('offersContainer');
+      const list = appState.offers.filter(x => x.active !== false);
+      c.innerHTML = list.map(o => `
+        <div class="glass-card rounded-3xl overflow-hidden border border-brand-gold/30 flex flex-col justify-between hover:shadow-2xl transition duration-300">
+          <div class="relative h-44 sm:h-48 overflow-hidden">
+            <img src="${o.img}" alt="${o.title}" class="w-full h-full object-cover transform hover:scale-110 transition duration-700">
+            <div class="absolute top-3 right-3 bg-rose-600 text-white text-[10px] sm:text-xs font-black px-3 py-1 rounded-full shadow">
+              ${o.discount}
+            </div>
+            <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur text-brand-gold text-[10px] font-mono px-2 py-0.5 rounded">
+              صلاحية العرض: ${o.expiry}
+            </div>
+          </div>
+          <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="text-base sm:text-lg font-bold text-white mb-2">${o.title}</h3>
+              <p class="text-slate-300 text-xs leading-relaxed mb-4">${o.desc}</p>
+            </div>
+            <a href="#booking" onclick="prefillBooking('عرض: ' + '${o.title}')" class="w-full gold-gradient text-brand-dark py-2.5 rounded-xl font-bold text-xs text-center hover:opacity-95 transition flex items-center justify-center gap-2">
+              <i class="fas fa-bolt"></i> <span>احجز هذا العرض الآن</span>
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let currentDestFilter = 'all';
+    function filterDestinations(cat) {
+      currentDestFilter = cat;
+      document.querySelectorAll('.dest-filter-btn').forEach(b => {
+        b.classList.remove('bg-brand-navy', 'text-white');
+        b.classList.add('bg-slate-100', 'text-slate-600');
+      });
+      event.target.classList.add('bg-brand-navy', 'text-white');
+      event.target.classList.remove('bg-slate-100', 'text-slate-600');
+      renderDestinations();
+    }
+
+    function renderDestinations() {
+      const c = document.getElementById('destinationsContainer');
+      let list = appState.destinations.filter(x => x.active !== false);
+      if (currentDestFilter !== 'all') {
+        list = list.filter(d => d.cat === currentDestFilter);
+      }
+      c.innerHTML = list.map(d => `
+        <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-2xl transition duration-300 group flex flex-col justify-between">
+          <div>
+            <div class="relative h-40 sm:h-44 overflow-hidden">
+              <img src="${d.img}" alt="${d.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+              <div class="absolute bottom-2 right-2 bg-brand-navy/85 text-brand-gold text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur">
+                ${d.country}
+              </div>
+            </div>
+            <div class="p-4">
+              <h4 class="font-bold text-sm text-brand-navy mb-1">${d.title}</h4>
+              <p class="text-[11px] text-slate-500">${d.note || 'برنامج مخصص حسب الطلب'}</p>
+            </div>
+          </div>
+          <div class="p-4 pt-0">
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-[10px] sm:text-[11px] font-bold text-brand-darkGold"><i class="fas fa-check-circle ml-1"></i>باقة مخصصة</span>
+              <a href="#booking" onclick="prefillBooking('استفسار عن وجهة: ${d.title}')" class="gold-gradient text-brand-dark px-3 py-1.5 rounded-lg text-xs font-bold hover:shadow transition">
+                طلب تسعير
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderUmrah() {
+      const c = document.getElementById('umrahContainer');
+      const list = appState.umrah.filter(x => x.active !== false);
+      c.innerHTML = list.map(u => `
+        <div class="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-lg hover:shadow-2xl transition duration-300 flex flex-col justify-between">
+          <div>
+            <div class="h-44 relative overflow-hidden">
+              <img src="${u.img}" alt="${u.name}" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                <h3 class="text-sm sm:text-base font-bold text-white">${u.name}</h3>
+              </div>
+            </div>
+            <div class="p-5 space-y-2.5 text-xs text-slate-600">
+              <div class="flex items-center gap-2 font-bold text-brand-navy">
+                <i class="fas fa-clock text-brand-gold"></i> <span>المدة: ${u.duration}</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <i class="fas fa-kaaba text-brand-gold mt-0.5"></i> <span>مكة: ${u.makkahHotel}</span>
+              </div>
+              <div class="flex items-start gap-2">
+                <i class="fas fa-mosque text-brand-gold mt-0.5"></i> <span>المدينة: ${u.madinahHotel}</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-5 pt-0">
+            <a href="#booking" onclick="prefillBooking('${u.name}')" class="w-full gold-gradient text-brand-dark py-2.5 sm:py-3 rounded-xl font-bold text-xs text-center block shadow hover:opacity-95 transition">
+              احجز برنامج العمرة الآن
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderVisas() {
+      const c = document.getElementById('visasContainer');
+      const list = appState.visas.filter(x => x.active !== false);
+      c.innerHTML = list.map(v => `
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 hover:border-brand-gold hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-xs sm:text-sm text-brand-navy">${v.country}</h4>
+              <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">${v.time}</span>
+            </div>
+            <p class="text-slate-500 text-[11px] sm:text-xs mb-3"><i class="fas fa-file-alt text-brand-gold ml-1"></i> ${v.req}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-200 flex justify-end">
+            <a href="#booking" onclick="prefillBooking('طلب تأشيرة: ${v.country}')" class="text-brand-darkGold font-bold text-xs hover:underline">تقديم الطلب والمتابعة ←</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderFaq() {
+      const c = document.getElementById('faqContainer');
+      c.innerHTML = appState.faq.map((item, idx) => `
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <button onclick="toggleFaq(${idx})" class="w-full p-4 text-right flex items-center justify-between font-bold text-xs sm:text-sm text-brand-navy hover:text-brand-darkGold transition">
+            <span>${item.q}</span>
+            <i class="fas fa-chevron-down text-xs transition duration-300" id="faqIcon-${idx}"></i>
+          </button>
+          <div id="faqAnswer-${idx}" class="hidden p-4 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100">
+            ${item.a}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleFaq(idx) {
+      const el = document.getElementById(`faqAnswer-${idx}`);
+      const icon = document.getElementById(`faqIcon-${idx}`);
+      el.classList.toggle('hidden');
+      icon.classList.toggle('rotate-180');
+    }
+
+    function prefillBooking(val) {
+      document.getElementById('custService').value = val.includes('تأشيرة') ? 'استخراج تأشيرة' : (val.includes('عمرة') ? 'برنامج عمرة شامل' : 'بكج سياحي عائلي');
+      document.getElementById('custDest').value = val;
+      location.hash = "#booking";
+    }
+
+    function handleQuickSearch(e) {
+      e.preventDefault();
+      const srv = document.getElementById('quickService').value;
+      const dst = document.getElementById('quickDest').value;
+      const dt = document.getElementById('quickDate').value;
+      document.getElementById('custService').value = srv;
+      if (dst) document.getElementById('custDest').value = dst;
+      if (dt) document.getElementById('custDepDate').value = dt;
+      location.hash = "#booking";
+      showToast("تم تحويل بياناتك إلى نموذج الحجز، يرجى إكمال البيانات والتأكيد.", "info");
+    }
+
+    /* -------------------------------------------------------------
+       6. BOOKING ENGINE WITH CONFIRMATION POPUP MODAL
+       ------------------------------------------------------------- */
+    function closeBookingSuccessModal() {
+      document.getElementById('bookingSuccessModal').classList.add('hidden');
+    }
+
+    async function handleBookingSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitBooking');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري تأكيد الحجز...`;
+
+      const id = "KB-" + Math.floor(1000 + Math.random() * 9000);
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const service = document.getElementById('custService').value;
+      const destination = document.getElementById('custDest').value.trim();
+      const travelers = document.getElementById('custTravelers').value || "1";
+      const depDate = document.getElementById('custDepDate').value || "غير محدد";
+      const notes = document.getElementById('custNotes').value.trim() || "لا توجد ملاحظات إضافية";
+
+      const bookingItem = {
+        id, name, phone, service, destination, travelers, depDate, notes,
+        status: "جديد",
+        createdAt: new Date().toISOString()
+      };
+
+      appState.bookings.unshift(bookingItem);
+      saveState();
+
+      if (isFirebaseReady && db) {
+        try { await db.collection("bookings").doc(id).set(bookingItem); } catch(err){}
+      }
+
+      const waNumber = (appState.settings.whatsApp || "+249913389597").replace(/\D/g, '');
+      const waMsg = 
+`*طلب حجز جديد - وكالة كنوز العالم للسفر والسياحة*
+━━━━━━━━━━━━━━━━━
+*كود الحجز:* #${id}
+*اسم العميل:* ${name}
+*رقم الهاتف:* ${phone}
+*الخدمة المطلوبة:* ${service}
+*الوجهة:* ${destination}
+*عدد المسافرين:* ${travelers}
+*تاريخ السفر:* ${depDate}
+*ملاحظات إضافية:* ${notes}
+━━━━━━━━━━━━━━━━━
+_تم الإرسال من منصة الحجز الإلكتروني لوكالة كنوز العالم_`;
+
+      const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`;
+
+      document.getElementById('successBookingCode').innerText = `#${id}`;
+      document.getElementById('btnSuccessWhatsAppRedirect').href = waUrl;
+      document.getElementById('bookingSuccessModal').classList.remove('hidden');
+
+      document.getElementById('mainBookingForm').reset();
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fas fa-paper-plane text-lg sm:text-xl text-brand-dark"></i> <span>تأكيد طلب الحجز ومتابعة الإجراءات</span>`;
+
+      updateStats();
+      renderAdminBookings();
+    }
+
+    /* -------------------------------------------------------------
+       7. CONTACT INQUIRY ENGINE (SYNC WITH ADMIN PANEL & FIRESTORE)
+       ------------------------------------------------------------- */
+    async function handleInquirySubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitInquiry');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...`;
+
+      const inqId = "INQ-" + Math.floor(1000 + Math.random() * 9000);
+      const name = document.getElementById('inqName').value.trim();
+      const phone = document.getElementById('inqPhone').value.trim();
+      const subject = document.getElementById('inqSubject').value.trim();
+      const message = document.getElementById('inqMsg').value.trim();
+
+      const inquiryItem = {
+        id: inqId,
+        name,
+        phone,
+        subject,
+        message,
+        status: "جديد",
+        createdAt: new Date().toISOString()
+      };
+
+      if (!appState.inquiries) appState.inquiries = [];
+      appState.inquiries.unshift(inquiryItem);
+      saveState();
+
+      if (isFirebaseReady && db) {
+        try {
+          await db.collection("inquiries").doc(inqId).set(inquiryItem);
+        } catch(err){
+          console.warn("Inquiry sync fallback:", err);
+        }
+      }
+
+      const waNumber = (appState.settings.whatsApp || "+249913389597").replace(/\D/g, '');
+      const waMsg = 
+`*استفسار جديد عبر الموقع - وكالة كنوز العالم*
+━━━━━━━━━━━━━━━━━
+*كود الاستفسار:* #${inqId}
+*الاسم:* ${name}
+*الجوال:* ${phone}
+*الموضوع:* ${subject}
+*نص الرسالة:* ${message}
+━━━━━━━━━━━━━━━━━`;
+
+      const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMsg)}`;
+
+      showToast("شكراً لتواصلك! تم تسجيل استفسارك بنجاح وسيتواصل معك مستشار السفر.", "success");
+      document.getElementById('mainInquiryForm').reset();
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fas fa-paper-plane"></i> <span>إرسال الاستفسار الآن</span>`;
+
+      updateStats();
+      renderAdminInquiries();
+
+      setTimeout(() => {
+        window.open(waUrl, '_blank');
+      }, 900);
+    }
+
+    /* -------------------------------------------------------------
+       8. ADMIN AUTHENTICATION (USER/PASS + 2FA PIN)
+       ------------------------------------------------------------- */
+    let tempAuthPassed = false;
+
+    function openAdminAuthModal() {
+      document.getElementById('adminAuthModal').classList.remove('hidden');
+      document.getElementById('adminPinModal').classList.add('hidden');
+    }
+    function closeAdminAuthModal() {
+      document.getElementById('adminAuthModal').classList.add('hidden');
+    }
+    function openAdminPinModal() {
+      document.getElementById('adminPinModal').classList.remove('hidden');
+      const pinInput = document.getElementById('admPinCode');
+      pinInput.value = '';
+      setTimeout(() => pinInput.focus(), 200);
+    }
+    function closeAdminPinModal() {
+      document.getElementById('adminPinModal').classList.add('hidden');
+      tempAuthPassed = false;
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('admUser').value.trim();
+      const pass = document.getElementById('admPass').value.trim();
+      const inputUserHash = await sha256(user);
+      const inputPassHash = await sha256(pass);
+
+      let targetUserHash = "";
+      let targetPassHash = "";
+
+      if (isFirebaseReady && db) {
+        try {
+          const doc = await db.collection("admin_auth").doc("credentials").get();
+          if (doc.exists) {
+            const data = doc.data();
+            targetUserHash = data.userHash;
+            targetPassHash = data.passHash;
+          } else {
+            const initUser = await sha256("admin");
+            const initPass = await sha256("admin123");
+            const initPin = await sha256("2626");
+            await db.collection("admin_auth").doc("credentials").set({
+              userHash: initUser,
+              passHash: initPass,
+              pinHash: initPin,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            targetUserHash = initUser;
+            targetPassHash = initPass;
+          }
+        } catch(err) {
+          console.warn("Auth check fallback:", err);
+        }
+      }
+
+      if (!targetUserHash) {
+        const localCreds = localStorage.getItem('kinooz_admin_creds');
+        if (localCreds) {
+          const parsed = JSON.parse(localCreds);
+          targetUserHash = parsed.userHash;
+          targetPassHash = parsed.passHash;
+        } else {
+          targetUserHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; // admin
+          targetPassHash = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; // admin123
+        }
+      }
+
+      if (inputUserHash === targetUserHash && inputPassHash === targetPassHash) {
+        closeAdminAuthModal();
+        tempAuthPassed = true;
+        openAdminPinModal();
+        showToast("تم التحقق من البيانات بنجاح! أدخل رمز الأمان (2FA).", "info");
+      } else {
+        showToast("اسم المستخدم أو كلمة المرور غير صحيحة!", "error");
+      }
+    }
+
+    async function handlePinVerify(e) {
+      e.preventDefault();
+      if (!tempAuthPassed) {
+        showToast("يرجى إتمام تسجيل الدخول أولاً!", "error");
+        closeAdminPinModal();
+        openAdminAuthModal();
+        return;
+      }
+
+      const pin = document.getElementById('admPinCode').value.trim();
+      const inputPinHash = await sha256(pin);
+
+      let targetPinHash = "";
+
+      if (isFirebaseReady && db) {
+        try {
+          const doc = await db.collection("admin_auth").doc("credentials").get();
+          if (doc.exists && doc.data().pinHash) {
+            targetPinHash = doc.data().pinHash;
+          }
+        } catch(err){}
+      }
+
+      if (!targetPinHash) {
+        const localCreds = localStorage.getItem('kinooz_admin_creds');
+        if (localCreds && JSON.parse(localCreds).pinHash) {
+          targetPinHash = JSON.parse(localCreds).pinHash;
+        } else {
+          targetPinHash = await sha256("2626");
+        }
+      }
+
+      if (inputPinHash === targetPinHash) {
+        closeAdminPinModal();
+        sessionStorage.setItem('kinooz_logged', 'true');
+        openAdminPanel();
+        showToast("تم التحقق بنجاح! مرحباً بك في لوحة الإدارة.", "success");
+      } else {
+        showToast("رمز التحقق غير صحيح! حاول مرة أخرى.", "error");
+        document.getElementById('admPinCode').value = '';
+      }
+    }
+
+    function openAdminPanel() {
+      document.getElementById('adminPanelModal').classList.remove('hidden');
+      renderAdminDashboard();
+      renderAdminInquiries();
+      populateAdminInputs();
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('kinooz_logged');
+      document.getElementById('adminPanelModal').classList.add('hidden');
+      showToast("تم تسجيل الخروج بنجاح.", "info");
+    }
+
+    async function handleChangeAdminCredentials(e) {
+      e.preventDefault();
+      const newUser = document.getElementById('secNewUser').value.trim();
+      const newPass = document.getElementById('secNewPass').value.trim();
+      const newPin = document.getElementById('secNewPin').value.trim();
+
+      const userHash = await sha256(newUser);
+      const passHash = await sha256(newPass);
+      const pinHash = await sha256(newPin);
+
+      const newCreds = { userHash, passHash, pinHash, updatedAt: new Date().toISOString() };
+
+      if (isFirebaseReady && db) {
+        try {
+          await db.collection("admin_auth").doc("credentials").set(newCreds);
+          showToast("تم تحديث وتشفير بيانات الدخول ورمز الـ PIN في Firebase بنجاح!", "success");
+        } catch(err) {
+          showToast("خطأ أثناء الحفظ في الفايربيز: " + err.message, "error");
+        }
+      } else {
+        localStorage.setItem('kinooz_admin_creds', JSON.stringify(newCreds));
+        showToast("تم تحديث البيانات والـ PIN محلياً بنجاح!", "success");
+      }
+      e.target.reset();
+    }
+
+    /* -------------------------------------------------------------
+       9. ADMIN DRAWER, TABS, INQUIRIES & CRUD CONTROLS
+       ------------------------------------------------------------- */
+    function toggleAdminSidebar() {
+      const sidebar = document.getElementById('adminSidebar');
+      const backdrop = document.getElementById('adminSidebarBackdrop');
+      sidebar.classList.toggle('translate-x-full');
+      backdrop.classList.toggle('hidden');
+    }
+
+    function showAdminTab(tabKey) {
+      document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabKey) {
+          btn.classList.add('bg-brand-gold', 'text-brand-dark');
+          btn.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+        } else {
+          btn.classList.remove('bg-brand-gold', 'text-brand-dark');
+          btn.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-white');
+        }
+      });
+
+      document.querySelectorAll('#adminContentArea > div').forEach(d => d.classList.add('hidden'));
+      const activeDiv = document.getElementById(`tab-${tabKey}`);
+      if (activeDiv) activeDiv.classList.remove('hidden');
+
+      if (window.innerWidth < 1024) {
+        const sidebar = document.getElementById('adminSidebar');
+        const backdrop = document.getElementById('adminSidebarBackdrop');
+        sidebar.classList.add('translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+
+      if (tabKey === 'dashboard') renderAdminDashboard();
+      if (tabKey === 'inquiries') renderAdminInquiries();
+      if (tabKey === 'services') renderAdminServices();
+      if (tabKey === 'offers') renderAdminOffers();
+      if (tabKey === 'destinations') renderAdminDestinations();
+      if (tabKey === 'umrah') renderAdminUmrah();
+      if (tabKey === 'visas') renderAdminVisas();
+      if (tabKey === 'faq') renderAdminFaq();
+      if (tabKey === 'settings') populateAdminInputs();
+    }
+
+    function renderAdminDashboard() {
+      updateStats();
+      renderAdminBookings();
+    }
+
+    function updateStats() {
+      const totalBookings = appState.bookings.length;
+      const newBookings = appState.bookings.filter(b => b.status === 'جديد').length;
+      const inqList = appState.inquiries || [];
+      const totalInquiries = inqList.length;
+      const newInquiries = inqList.filter(i => i.status === 'جديد').length;
+
+      document.getElementById('statTotalBookings').innerText = totalBookings;
+      document.getElementById('statNewBookings').innerText = newBookings;
+      document.getElementById('badgeBookingsCount').innerText = totalBookings;
+
+      document.getElementById('statTotalInquiries').innerText = totalInquiries;
+      document.getElementById('statInqTabTotal').innerText = totalInquiries;
+      document.getElementById('statInqTabNew').innerText = newInquiries;
+      document.getElementById('badgeInquiriesCount').innerText = newInquiries;
+
+      document.getElementById('statServicesCount').innerText = appState.services.length;
+      document.getElementById('statDestCount').innerText = appState.destinations.length;
+    }
+
+    function renderAdminBookings() {
+      const tbody = document.getElementById('adminAllBookingsTbody');
+      tbody.innerHTML = appState.bookings.map(b => `
+        <tr class="hover:bg-slate-800/40">
+          <td class="p-3 font-mono font-bold text-brand-gold text-[11px]">#${b.id}</td>
+          <td class="p-3 font-bold text-white">${b.name}</td>
+          <td class="p-3 text-[11px]" dir="ltr">${b.phone}</td>
+          <td class="p-3">${b.service}</td>
+          <td class="p-3">${b.destination || '-'}</td>
+          <td class="p-3">${b.travelers || '1'}</td>
+          <td class="p-3 text-[11px]">${b.depDate || '-'}</td>
+          <td class="p-3">
+            <select onchange="updateBookingStatus('${b.id}', this.value)" class="bg-slate-800 border border-slate-700 text-[11px] rounded-lg px-2 py-1 text-white focus:outline-none">
+              <option value="جديد" ${b.status === 'جديد' ? 'selected' : ''}>جديد</option>
+              <option value="قيد المتابعة" ${b.status === 'قيد المتابعة' ? 'selected' : ''}>قيد المتابعة</option>
+              <option value="مؤكد" ${b.status === 'مؤكد' ? 'selected' : ''}>مؤكد</option>
+              <option value="مكتمل" ${b.status === 'مكتمل' ? 'selected' : ''}>مكتمل</option>
+              <option value="ملغي" ${b.status === 'ملغي' ? 'selected' : ''}>ملغي</option>
+            </select>
+          </td>
+          <td class="p-3 text-center flex items-center justify-center gap-1.5">
+            <a href="https://wa.me/${b.phone.replace(/\D/g, '')}" target="_blank" class="w-7 h-7 rounded-lg bg-emerald-600/30 text-emerald-400 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition" title="واتساب"><i class="fab fa-whatsapp"></i></a>
+            <a href="tel:${b.phone.replace(/\s+/g, '')}" class="w-7 h-7 rounded-lg bg-blue-600/30 text-blue-400 hover:bg-blue-600 hover:text-white flex items-center justify-center transition" title="اتصال"><i class="fas fa-phone-alt"></i></a>
+            <button onclick="deleteBooking('${b.id}')" class="w-7 h-7 rounded-lg bg-rose-600/30 text-rose-400 hover:bg-rose-600 hover:text-white flex items-center justify-center transition" title="حذف"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterBookingsTable() {
+      const q = document.getElementById('bookingSearchInput').value.toLowerCase();
+      document.querySelectorAll('#adminAllBookingsTbody tr').forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    async function updateBookingStatus(id, newStatus) {
+      const item = appState.bookings.find(b => b.id === id);
+      if (item) {
+        item.status = newStatus;
+        saveState();
+        if (isFirebaseReady && db) {
+          try { await db.collection("bookings").doc(id).update({ status: newStatus }); } catch(e){}
+        }
+        showToast(`تم تحديث حالة الحجز #${id} إلى: ${newStatus}`, "info");
+        updateStats();
+      }
+    }
+
+    async function deleteBooking(id) {
+      if (!confirm(`هل أنت متأكد من حذف الحجز #${id}؟`)) return;
+      appState.bookings = appState.bookings.filter(b => b.id !== id);
+      saveState();
+      if (isFirebaseReady && db) {
+        try { await db.collection("bookings").doc(id).delete(); } catch(e){}
+      }
+      renderAdminBookings();
+      updateStats();
+      showToast("تم حذف الحجز بنجاح.", "info");
+    }
+
+    /* INQUIRIES ADMIN CONTROLS */
+    function renderAdminInquiries() {
+      const tbody = document.getElementById('adminAllInquiriesTbody');
+      if (!tbody) return;
+      const list = appState.inquiries || [];
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-500">لا توجد استفسارات واردة حتى الآن.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map(inq => {
+        const dateStr = inq.createdAt ? inq.createdAt.split('T')[0] : '-';
+        return `
+          <tr class="hover:bg-slate-800/40">
+            <td class="p-3 font-mono font-bold text-amber-400 text-[11px]">#${inq.id}</td>
+            <td class="p-3 font-bold text-white">${inq.name}</td>
+            <td class="p-3 text-[11px]" dir="ltr">${inq.phone}</td>
+            <td class="p-3 font-semibold text-brand-gold">${inq.subject}</td>
+            <td class="p-3 max-w-xs truncate text-slate-300" title="${inq.message}">${inq.message}</td>
+            <td class="p-3 text-[11px] text-slate-400">${dateStr}</td>
+            <td class="p-3">
+              <select onchange="updateInquiryStatus('${inq.id}', this.value)" class="bg-slate-800 border border-slate-700 text-[11px] rounded-lg px-2 py-1 text-white focus:outline-none">
+                <option value="جديد" ${inq.status === 'جديد' ? 'selected' : ''}>جديد</option>
+                <option value="قيد المتابعة" ${inq.status === 'قيد المتابعة' ? 'selected' : ''}>قيد المتابعة</option>
+                <option value="تم الرد" ${inq.status === 'تم الرد' ? 'selected' : ''}>تم الرد</option>
+                <option value="مغلق" ${inq.status === 'مغلق' ? 'selected' : ''}>مغلق</option>
+              </select>
+            </td>
+            <td class="p-3 text-center flex items-center justify-center gap-1.5">
+              <a href="https://wa.me/${inq.phone.replace(/\D/g, '')}?text=${encodeURIComponent('أهلاً بك أخي الكريم بخصوص استفسارك لدى وكالة كنوز العالم للسفر والسياحة:')}" target="_blank" class="w-7 h-7 rounded-lg bg-emerald-600/30 text-emerald-400 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition" title="رد واتساب"><i class="fab fa-whatsapp"></i></a>
+              <a href="tel:${inq.phone.replace(/\s+/g, '')}" class="w-7 h-7 rounded-lg bg-blue-600/30 text-blue-400 hover:bg-blue-600 hover:text-white flex items-center justify-center transition" title="اتصال"><i class="fas fa-phone-alt"></i></a>
+              <button onclick="deleteInquiry('${inq.id}')" class="w-7 h-7 rounded-lg bg-rose-600/30 text-rose-400 hover:bg-rose-600 hover:text-white flex items-center justify-center transition" title="حذف"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function filterInquiriesTable() {
+      const q = document.getElementById('inquirySearchInput').value.toLowerCase();
+      document.querySelectorAll('#adminAllInquiriesTbody tr').forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    async function updateInquiryStatus(id, newStatus) {
+      if (!appState.inquiries) return;
+      const item = appState.inquiries.find(i => i.id === id);
+      if (item) {
+        item.status = newStatus;
+        saveState();
+        if (isFirebaseReady && db) {
+          try { await db.collection("inquiries").doc(id).update({ status: newStatus }); } catch(e){}
+        }
+        showToast(`تم تحديث حالة الاستفسار #${id} إلى: ${newStatus}`, "info");
+        updateStats();
+      }
+    }
+
+    async function deleteInquiry(id) {
+      if (!confirm(`هل أنت متأكد من حذف الاستفسار #${id}؟`)) return;
+      appState.inquiries = appState.inquiries.filter(i => i.id !== id);
+      saveState();
+      if (isFirebaseReady && db) {
+        try { await db.collection("inquiries").doc(id).delete(); } catch(e){}
+      }
+      renderAdminInquiries();
+      updateStats();
+      showToast("تم حذف الاستفسار بنجاح.", "info");
+    }
+
+    /* Hero & About Save Handlers */
+    function handleSaveHeroSettings(e) {
+      e.preventDefault();
+      appState.hero = {
+        badge: document.getElementById('heroFormBadge').value.trim(),
+        title: document.getElementById('heroFormTitle').value.trim(),
+        subtitle: document.getElementById('heroFormSubtitle').value.trim(),
+        bgImg: document.getElementById('heroFormBgImg').value.trim()
+      };
+      saveState();
+      applyHeroAndAbout();
+      showToast("تم تحديث بيانات الواجهة الرئيسية بنجاح!", "success");
+    }
+
+    function handleSaveAboutSettings(e) {
+      e.preventDefault();
+      appState.about = {
+        heading: document.getElementById('aboutFormHeading').value.trim(),
+        text: document.getElementById('aboutFormText').value.trim(),
+        img: document.getElementById('aboutFormImg').value.trim()
+      };
+      saveState();
+      applyHeroAndAbout();
+      showToast("تم تحديث محتوى (من نحن) بنجاح!", "success");
+    }
+
+    /* Other CRUD Renderers */
+    function renderAdminServices() {
+      const c = document.getElementById('adminServicesList');
+      c.innerHTML = appState.services.map(s => `
+        <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-sm text-white">${s.title}</h4>
+              <i class="fas ${s.icon || 'fa-plane'} text-brand-gold"></i>
+            </div>
+            <p class="text-xs text-slate-400 mb-2">${s.desc}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end gap-2">
+            <button onclick="openEditItemModal('service', '${s.id}')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs"><i class="fas fa-edit"></i> تعديل</button>
+            <button onclick="deleteItem('services', '${s.id}')" class="px-3 py-1 bg-rose-900/40 text-rose-300 hover:bg-rose-700 hover:text-white rounded-lg text-xs"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminOffers() {
+      const c = document.getElementById('adminOffersList');
+      c.innerHTML = appState.offers.map(o => `
+        <div class="bg-brand-navy rounded-2xl border border-slate-800 overflow-hidden flex flex-col justify-between">
+          <img src="${o.img}" class="h-32 w-full object-cover">
+          <div class="p-4 flex-1">
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="font-bold text-sm text-white">${o.title}</h4>
+              <span class="text-rose-400 font-bold text-xs">${o.discount}</span>
+            </div>
+            <p class="text-xs text-slate-400 mb-2">${o.desc}</p>
+          </div>
+          <div class="p-4 pt-0 flex justify-end gap-2">
+            <button onclick="openEditItemModal('offer', '${o.id}')" class="px-3 py-1 bg-slate-800 text-white rounded text-xs"><i class="fas fa-edit"></i> تعديل</button>
+            <button onclick="deleteItem('offers', '${o.id}')" class="px-3 py-1 bg-rose-900/40 text-rose-300 rounded text-xs"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminDestinations() {
+      const c = document.getElementById('adminDestinationsList');
+      c.innerHTML = appState.destinations.map(d => `
+        <div class="bg-brand-navy rounded-2xl border border-slate-800 overflow-hidden">
+          <img src="${d.img}" class="h-28 w-full object-cover">
+          <div class="p-3">
+            <h4 class="font-bold text-sm text-white">${d.title}</h4>
+            <div class="text-[11px] text-slate-400">${d.country} (${d.cat})</div>
+          </div>
+          <div class="p-3 pt-0 flex justify-end gap-2">
+            <button onclick="openEditItemModal('destination', '${d.id}')" class="px-2.5 py-1 bg-slate-800 text-white rounded text-xs"><i class="fas fa-edit"></i></button>
+            <button onclick="deleteItem('destinations', '${d.id}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 rounded text-xs"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminUmrah() {
+      const c = document.getElementById('adminUmrahList');
+      c.innerHTML = appState.umrah.map(u => `
+        <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <h4 class="font-bold text-sm text-white mb-1">${u.name}</h4>
+            <div class="text-xs text-brand-gold mb-2">المدة: ${u.duration}</div>
+            <div class="text-xs text-slate-400 space-y-1">
+              <div>مكة: ${u.makkahHotel}</div>
+              <div>المدينة: ${u.madinahHotel}</div>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end gap-2">
+            <button onclick="openEditItemModal('umrah', '${u.id}')" class="px-3 py-1 bg-slate-800 text-white rounded-lg text-xs"><i class="fas fa-edit"></i> تعديل</button>
+            <button onclick="deleteItem('umrah', '${u.id}')" class="px-3 py-1 bg-rose-900/40 text-rose-300 rounded-lg text-xs"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminVisas() {
+      const c = document.getElementById('adminVisasList');
+      c.innerHTML = appState.visas.map(v => `
+        <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <h4 class="font-bold text-sm text-white mb-1">${v.country}</h4>
+            <div class="text-xs text-emerald-400 font-semibold mb-1">${v.time}</div>
+            <p class="text-xs text-slate-400">${v.req}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end gap-2">
+            <button onclick="openEditItemModal('visa', '${v.id}')" class="px-3 py-1 bg-slate-800 text-white rounded-lg text-xs"><i class="fas fa-edit"></i> تعديل</button>
+            <button onclick="deleteItem('visas', '${v.id}')" class="px-3 py-1 bg-rose-900/40 text-rose-300 rounded-lg text-xs"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminFaq() {
+      const c = document.getElementById('adminFaqList');
+      c.innerHTML = appState.faq.map(f => `
+        <div class="bg-brand-navy p-4 rounded-2xl border border-slate-800 flex items-start justify-between gap-4">
+          <div>
+            <h4 class="font-bold text-sm text-white mb-1">${f.q}</h4>
+            <p class="text-xs text-slate-400">${f.a}</p>
+          </div>
+          <button onclick="deleteItem('faq', '${f.id}')" class="px-2.5 py-1 bg-rose-900/40 text-rose-300 rounded text-xs shrink-0"><i class="fas fa-trash"></i></button>
+        </div>
+      `).join('');
+    }
+
+    function deleteItem(col, id) {
+      if (!confirm("هل تريد حذف هذا العنصر نهائياً؟")) return;
+      appState[col] = appState[col].filter(x => x.id !== id);
+      saveState();
+      renderAll();
+      showAdminTab(col);
+      showToast("تم الحذف بنجاح.", "info");
+    }
+
+    /* CRUD Dynamic Modals */
+    function openItemCrudModal(type, title, fieldsHtml, id = "") {
+      document.getElementById('crudItemType').value = type;
+      document.getElementById('crudItemId').value = id;
+      document.getElementById('crudModalTitle').innerText = title;
+      document.getElementById('crudFormFieldsContainer').innerHTML = fieldsHtml;
+      document.getElementById('itemCrudModal').classList.remove('hidden');
+    }
+    function closeItemCrudModal() {
+      document.getElementById('itemCrudModal').classList.add('hidden');
+    }
+
+    function openAddServiceModal() {
+      openItemCrudModal('service', 'إضافة خدمة جديدة', `
+        <div><label class="block text-slate-400 mb-1">اسم الخدمة</label><input type="text" id="fTitle" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">الوصف</label><textarea id="fDesc" rows="2" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea></div>
+        <div><label class="block text-slate-400 mb-1">أيقونة FontAwesome</label><input type="text" id="fIcon" value="fa-plane" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+      `);
+    }
+
+    function openAddOfferModal() {
+      openItemCrudModal('offer', 'إضافة عرض جديد', `
+        <div><label class="block text-slate-400 mb-1">عنوان العرض</label><input type="text" id="fTitle" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">الوصف</label><textarea id="fDesc" rows="2" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea></div>
+        <div><label class="block text-slate-400 mb-1">شارة الخصم</label><input type="text" id="fDiscount" value="عرض خاص" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">رابط الصورة</label><input type="url" id="fImg" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">تاريخ الانتهاء</label><input type="date" id="fExpiry" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+      `);
+    }
+
+    function openAddDestinationModal() {
+      openItemCrudModal('destination', 'إضافة وجهة سياحية (بدون تسعيرة ثابتة)', `
+        <div><label class="block text-slate-400 mb-1">المدينة أو الوجهة</label><input type="text" id="fTitle" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">الدولة</label><input type="text" id="fCountry" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">التصنيف</label>
+          <select id="fCat" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+            <option value="ديني">ديني</option><option value="عربي">عربي</option><option value="دولي">دولي</option>
+          </select>
+        </div>
+        <div><label class="block text-slate-400 mb-1">ملاحظة أو نوع الرحلة</label><input type="text" id="fNote" value="برنامج متكامل حسب الطلب" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">رابط الصورة</label><input type="url" id="fImg" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+      `);
+    }
+
+    function openAddUmrahModal() {
+      openItemCrudModal('umrah', 'إضافة برنامج عمرة', `
+        <div><label class="block text-slate-400 mb-1">اسم البرنامج</label><input type="text" id="fName" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">المدة</label><input type="text" id="fDuration" placeholder="10 أيام" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">فندق مكة</label><input type="text" id="fMakkah" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">فندق المدينة</label><input type="text" id="fMadinah" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">رابط الصورة</label><input type="url" id="fImg" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+      `);
+    }
+
+    function openAddVisaModal() {
+      openItemCrudModal('visa', 'إضافة خدمة تأشيرة', `
+        <div><label class="block text-slate-400 mb-1">الدولة أو التأشيرة</label><input type="text" id="fCountry" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">مدة الإنجاز</label><input type="text" id="fTime" placeholder="خلال 48 ساعة" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">المتطلبات الأساسية</label><input type="text" id="fReq" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+      `);
+    }
+
+    function openAddFaqModal() {
+      openItemCrudModal('faq', 'إضافة سؤال وجواب', `
+        <div><label class="block text-slate-400 mb-1">السؤال</label><input type="text" id="fQ" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        <div><label class="block text-slate-400 mb-1">الإجابة</label><textarea id="fA" rows="3" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></textarea></div>
+      `);
+    }
+
+    function handleCrudFormSubmit(e) {
+      e.preventDefault();
+      const type = document.getElementById('crudItemType').value;
+      const id = document.getElementById('crudItemId').value || (type[0] + Date.now().toString().slice(-4));
+
+      if (type === 'service') {
+        const item = { id, title: document.getElementById('fTitle').value, desc: document.getElementById('fDesc').value, icon: document.getElementById('fIcon').value, active: true };
+        const idx = appState.services.findIndex(x => x.id === id);
+        if (idx >= 0) appState.services[idx] = item; else appState.services.unshift(item);
+      } else if (type === 'offer') {
+        const item = { id, title: document.getElementById('fTitle').value, desc: document.getElementById('fDesc').value, discount: document.getElementById('fDiscount').value, img: document.getElementById('fImg').value, expiry: document.getElementById('fExpiry').value || '2026-12-31', active: true };
+        const idx = appState.offers.findIndex(x => x.id === id);
+        if (idx >= 0) appState.offers[idx] = item; else appState.offers.unshift(item);
+      } else if (type === 'destination') {
+        const item = { id, title: document.getElementById('fTitle').value, country: document.getElementById('fCountry').value, cat: document.getElementById('fCat').value, note: document.getElementById('fNote').value, img: document.getElementById('fImg').value, active: true };
+        const idx = appState.destinations.findIndex(x => x.id === id);
+        if (idx >= 0) appState.destinations[idx] = item; else appState.destinations.unshift(item);
+      } else if (type === 'umrah') {
+        const item = { id, name: document.getElementById('fName').value, duration: document.getElementById('fDuration').value, makkahHotel: document.getElementById('fMakkah').value, madinahHotel: document.getElementById('fMadinah').value, img: document.getElementById('fImg').value, active: true };
+        const idx = appState.umrah.findIndex(x => x.id === id);
+        if (idx >= 0) appState.umrah[idx] = item; else appState.umrah.unshift(item);
+      } else if (type === 'visa') {
+        const item = { id, country: document.getElementById('fCountry').value, time: document.getElementById('fTime').value, req: document.getElementById('fReq').value, active: true };
+        const idx = appState.visas.findIndex(x => x.id === id);
+        if (idx >= 0) appState.visas[idx] = item; else appState.visas.unshift(item);
+      } else if (type === 'faq') {
+        const item = { id, q: document.getElementById('fQ').value, a: document.getElementById('fA').value };
+        const idx = appState.faq.findIndex(x => x.id === id);
+        if (idx >= 0) appState.faq[idx] = item; else appState.faq.unshift(item);
+      }
+
+      saveState();
+      renderAll();
+      closeItemCrudModal();
+      showToast("تم حفظ التعديلات بنجاح!", "success");
+    }
+
+    function openEditItemModal(type, id) {
+      if (type === 'service') {
+        const s = appState.services.find(x => x.id === id);
+        if (!s) return;
+        openItemCrudModal('service', 'تعديل الخدمة', `
+          <div><label class="block text-slate-400 mb-1">اسم الخدمة</label><input type="text" id="fTitle" value="${s.title}" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+          <div><label class="block text-slate-400 mb-1">الوصف</label><textarea id="fDesc" rows="2" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">${s.desc}</textarea></div>
+          <div><label class="block text-slate-400 mb-1">الأيقونة</label><input type="text" id="fIcon" value="${s.icon}" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        `, id);
+      } else if (type === 'destination') {
+        const d = appState.destinations.find(x => x.id === id);
+        if (!d) return;
+        openItemCrudModal('destination', 'تعديل الوجهة السياحية', `
+          <div><label class="block text-slate-400 mb-1">الوجهة</label><input type="text" id="fTitle" value="${d.title}" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+          <div><label class="block text-slate-400 mb-1">الدولة</label><input type="text" id="fCountry" value="${d.country}" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+          <div><label class="block text-slate-400 mb-1">التصنيف</label>
+            <select id="fCat" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+              <option value="ديني" ${d.cat === 'ديني' ? 'selected' : ''}>ديني</option>
+              <option value="عربي" ${d.cat === 'عربي' ? 'selected' : ''}>عربي</option>
+              <option value="دولي" ${d.cat === 'دولي' ? 'selected' : ''}>دولي</option>
+            </select>
+          </div>
+          <div><label class="block text-slate-400 mb-1">ملاحظة البرنامج</label><input type="text" id="fNote" value="${d.note || ''}" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+          <div><label class="block text-slate-400 mb-1">رابط الصورة</label><input type="url" id="fImg" value="${d.img}" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        `, id);
+      } else if (type === 'offer') {
+        const o = appState.offers.find(x => x.id === id);
+        if (!o) return;
+        openItemCrudModal('offer', 'تعديل العرض', `
+          <div><label class="block text-slate-400 mb-1">عنوان العرض</label><input type="text" id="fTitle" value="${o.title}" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+          <div><label class="block text-slate-400 mb-1">الوصف</label><textarea id="fDesc" rows="2" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">${o.desc}</textarea></div>
+          <div><label class="block text-slate-400 mb-1">الخصم</label><input type="text" id="fDiscount" value="${o.discount}" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+          <div><label class="block text-slate-400 mb-1">رابط الصورة</label><input type="url" id="fImg" value="${o.img}" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+          <div><label class="block text-slate-400 mb-1">تاريخ الانتهاء</label><input type="date" id="fExpiry" value="${o.expiry}" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"></div>
+        `, id);
+      }
+    }
+
+    function populateAdminInputs() {
+      // Hero
+      document.getElementById('heroFormBadge').value = appState.hero.badge;
+      document.getElementById('heroFormTitle').value = appState.hero.title;
+      document.getElementById('heroFormSubtitle').value = appState.hero.subtitle;
+      document.getElementById('heroFormBgImg').value = appState.hero.bgImg;
+
+      // About
+      document.getElementById('aboutFormHeading').value = appState.about.heading;
+      document.getElementById('aboutFormText').value = appState.about.text;
+      document.getElementById('aboutFormImg').value = appState.about.img;
+
+      // Settings & Social Links
+      const s = appState.settings;
+      document.getElementById('setAgencyNameAr').value = s.agencyNameAr;
+      document.getElementById('setAgencyNameEn').value = s.agencyNameEn;
+      document.getElementById('setWhatsApp').value = s.whatsApp;
+      document.getElementById('setWhatsAppGroup').value = s.whatsAppGroup || "";
+      document.getElementById('setFacebookUrl').value = s.facebookUrl || "";
+      document.getElementById('setPhone').value = s.phone;
+      document.getElementById('setEmail').value = s.email;
+      
+      const logoInput = document.getElementById('setLogoUrl');
+      logoInput.value = s.logoUrl || "";
+      previewLogoInput(s.logoUrl || "");
+    }
+
+    async function handleSaveSettings(e) {
+      e.preventDefault();
+      const enteredLogo = document.getElementById('setLogoUrl').value.trim();
+
+      appState.settings = {
+        agencyNameAr: document.getElementById('setAgencyNameAr').value.trim(),
+        agencyNameEn: document.getElementById('setAgencyNameEn').value.trim(),
+        whatsApp: document.getElementById('setWhatsApp').value.trim(),
+        whatsAppGroup: document.getElementById('setWhatsAppGroup').value.trim(),
+        facebookUrl: document.getElementById('setFacebookUrl').value.trim(),
+        phone: document.getElementById('setPhone').value.trim(),
+        email: document.getElementById('setEmail').value.trim(),
+        logoUrl: enteredLogo
+      };
+
+      saveState();
+      applySettings();
+      await saveAllChangesToFirebase();
+      showToast("تم حفظ كافة إعدادات الهوية ومجموعة الواتساب والفيسبوك بنجاح!", "success");
+    }
+
+    /* -------------------------------------------------------------
+       10. UTILITIES & LIFECYCLE
+       ------------------------------------------------------------- */
+    function showToast(msg, type = "info") {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto px-4 py-3 rounded-2xl shadow-2xl text-xs font-bold flex items-center gap-2 transform transition-all duration-300 text-white ${
+        type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-rose-600' : 'bg-brand-navy border border-brand-gold/40'
+      }`;
+      const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+      toast.innerHTML = `<i class="fas ${icon} text-base"></i> <span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
+    }
+
+    function toggleMobileMenu() {
+      const m = document.getElementById('mobileMenu');
+      const icon = document.getElementById('menuIcon');
+      m.classList.toggle('hidden');
+      icon.className = m.classList.contains('hidden') ? 'fas fa-bars' : 'fas fa-times';
+    }
+
+    function closePromoModal() {
+      document.getElementById('promoModal').classList.add('hidden');
+      sessionStorage.setItem('kinooz_promo_shown', 'true');
+    }
+
+    function startTimer() {
+      const target = new Date().getTime() + (3 * 24 * 60 * 60 * 1000) + (14 * 60 * 60 * 1000);
+      setInterval(() => {
+        const diff = target - new Date().getTime();
+        if (diff <= 0) return;
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60)) / 1000);
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        if (document.getElementById('pDays')) document.getElementById('pDays').innerText = `${d} يوم`;
+        if (document.getElementById('pHours')) document.getElementById('pHours').innerText = `${h} ساعة`;
+        if (document.getElementById('pMins')) document.getElementById('pMins').innerText = `${m} دقيقة`;
+        if (document.getElementById('pSecs')) document.getElementById('pSecs').innerText = `${s} ثانية`;
+        if (document.getElementById('sectionTimer')) {
+          document.getElementById('sectionTimer').innerText = `${d} يوم : ${h} ساعة : ${m} دقيقة : ${s} ثانية`;
+        }
+      }, 1000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadLocalState();
+      initFirebase();
+      renderAll();
+      startTimer();
+
+      document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+      if (!sessionStorage.getItem('kinooz_promo_shown')) {
+        setTimeout(() => {
+          document.getElementById('promoModal').classList.remove('hidden');
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html>
