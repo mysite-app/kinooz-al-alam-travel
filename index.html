@@ -149,17 +149,17 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center gap-2">
       <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
         <a href="tel:+966530963551" class="hover:text-brand-gold transition flex items-center gap-1.5" dir="ltr">
-          <i class="fas fa-phone-alt text-brand-gold"></i> +966 53 096 3551
+          <i class="fas fa-phone-alt text-brand-gold"></i> <span id="topBarPhone">+966 53 096 3551</span>
         </a>
-        <a href="https://wa.me/249913389597" target="_blank" class="hover:text-emerald-400 transition flex items-center gap-1.5" dir="ltr">
-          <i class="fab fa-whatsapp text-emerald-400"></i> +249 91 338 9597
+        <a id="topBarWaDirect" href="https://wa.me/249913389597" target="_blank" class="hover:text-emerald-400 transition flex items-center gap-1.5" dir="ltr">
+          <i class="fab fa-whatsapp text-emerald-400"></i> <span id="topBarWhatsApp">+249 91 338 9597</span>
         </a>
         <!-- Top Bar WhatsApp Group Link -->
         <a id="topBarWaGroup" href="#" target="_blank" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1.5 font-bold">
           <i class="fas fa-users"></i> <span>قروب الواتساب للعروض</span>
         </a>
-        <a href="mailto:infokunuz26@gmail.com" class="hover:text-brand-gold transition hidden md:flex items-center gap-1.5">
-          <i class="fas fa-envelope text-brand-gold"></i> infokunuz26@gmail.com
+        <a id="topBarEmailLink" href="mailto:infokunuz26@gmail.com" class="hover:text-brand-gold transition hidden md:flex items-center gap-1.5">
+          <i class="fas fa-envelope text-brand-gold"></i> <span id="topBarEmail">infokunuz26@gmail.com</span>
         </a>
       </div>
       <div class="text-[11px] text-brand-gold font-medium hidden sm:block">
@@ -303,7 +303,7 @@
     </div>
   </section>
 
-  <!-- NEW: WHATSAPP GROUP DEDICATED PROMOTIONAL BANNER -->
+  <!-- WHATSAPP GROUP DEDICATED PROMOTIONAL BANNER -->
   <section class="bg-gradient-to-r from-emerald-950 via-brand-navy to-emerald-900 border-y border-emerald-500/40 py-5 text-white shadow-xl relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
       <div class="flex items-center gap-3.5 sm:gap-4 text-center md:text-right">
@@ -433,10 +433,10 @@
         </div>
         <!-- Filter Tabs -->
         <div class="flex flex-wrap gap-1.5 sm:gap-2 text-xs font-semibold" id="destinationFilterGroup">
-          <button onclick="filterDestinations('all')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-brand-navy text-white transition active-filter">الكل</button>
-          <button onclick="filterDestinations('ديني')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">عمرة وزيارة</button>
-          <button onclick="filterDestinations('عربي')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">وجهات عربية</button>
-          <button onclick="filterDestinations('دولي')" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">وجهات دولية</button>
+          <button onclick="filterDestinations('all', this)" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-brand-navy text-white transition active-filter">الكل</button>
+          <button onclick="filterDestinations('ديني', this)" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">عمرة وزيارة</button>
+          <button onclick="filterDestinations('عربي', this)" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">وجهات عربية</button>
+          <button onclick="filterDestinations('دولي', this)" class="dest-filter-btn px-3 sm:px-4 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition">وجهات دولية</button>
         </div>
       </div>
       <div id="destinationsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"></div>
@@ -582,7 +582,7 @@
         <div class="lg:col-span-5 bg-brand-navy text-white p-6 sm:p-8 rounded-3xl shadow-xl flex flex-col justify-between">
           <div>
             <h3 class="text-xl sm:text-2xl font-black gold-text-gradient mb-1 sm:mb-2" id="contactAgencyTitle">وكالة كنوز العالم للسفر والسياحة</h3>
-            <p class="text-[11px] sm:text-xs text-slate-300 font-light mb-6 sm:mb-8">Kinooz Al-Alam For Travel & Tourism Agency</p>
+            <p class="text-[11px] sm:text-xs text-slate-300 font-light mb-6 sm:mb-8" id="contactAgencySub">Kinooz Al-Alam For Travel & Tourism Agency</p>
 
             <div class="space-y-4 sm:space-y-5 text-xs sm:text-sm">
               <div class="flex items-start gap-3 sm:gap-4">
@@ -643,7 +643,6 @@
           <div class="pt-6 border-t border-slate-800 mt-6 flex items-center justify-between">
             <span class="text-[11px] text-slate-400">تابعونا عبر منصاتنا:</span>
             <div class="flex gap-2 text-brand-gold text-xs">
-              <!-- Facebook Managed Page Link -->
               <a id="contactFacebook" href="#" target="_blank" title="صفحتنا على فيسبوك" class="w-8 h-8 rounded-lg bg-brand-lightNavy flex items-center justify-center hover:bg-blue-600 hover:text-white transition">
                 <i class="fab fa-facebook-f"></i>
               </a>
@@ -698,7 +697,7 @@
                 <i class="fas fa-plane-departure text-brand-gold text-sm"></i>
               </div>
             </div>
-            <h4 class="text-white font-bold text-base gold-text-gradient">وكالة كنوز العالم</h4>
+            <h4 class="text-white font-bold text-base gold-text-gradient" id="footerAgencyName">وكالة كنوز العالم</h4>
           </div>
           <p class="leading-relaxed mb-4 text-slate-400 text-[11px] sm:text-xs">
             وجهتكم المعتمدة لكافة خدمات السفر والسياحة الدولية، استخراج التأشيرات، وبرامج العمرة الفاخرة بأعلى معايير المصداقية والجودة.
@@ -729,18 +728,18 @@
         </div>
         <div>
           <h5 class="text-white font-bold text-sm mb-3">التواصل والمساندة</h5>
-          <p class="mb-2 text-[11px] sm:text-xs"><i class="fab fa-whatsapp text-emerald-400 ml-1"></i> <span dir="ltr">+249 91 338 9597</span></p>
-          <p class="mb-2 text-[11px] sm:text-xs"><i class="fas fa-phone text-brand-gold ml-1"></i> <span dir="ltr">+966 53 096 3551</span></p>
-          <p class="mb-2 text-[11px] sm:text-xs"><i class="fas fa-envelope text-brand-gold ml-1"></i> infokunuz26@gmail.com</p>
+          <p class="mb-2 text-[11px] sm:text-xs"><i class="fab fa-whatsapp text-emerald-400 ml-1"></i> <span dir="ltr" id="footerWa">+249 91 338 9597</span></p>
+          <p class="mb-2 text-[11px] sm:text-xs"><i class="fas fa-phone text-brand-gold ml-1"></i> <span dir="ltr" id="footerPhone">+966 53 096 3551</span></p>
+          <p class="mb-2 text-[11px] sm:text-xs"><i class="fas fa-envelope text-brand-gold ml-1"></i> <span id="footerEmail">infokunuz26@gmail.com</span></p>
         </div>
       </div>
 
       <!-- Bottom Bar with Stealth Admin Gate Icon -->
       <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
-        <p class="text-[11px] text-center sm:text-right">© <span id="currentYear">2026</span> جميع الحقوق محفوظة لـ <span class="text-brand-gold font-semibold">وكالة كنوز العالم للسفر والسياحة</span></p>
+        <p class="text-[11px] text-center sm:text-right">© <span id="currentYear">2026</span> جميع الحقوق محفوظة لـ <span class="text-brand-gold font-semibold" id="footerCopyName">وكالة كنوز العالم للسفر والسياحة</span></p>
         
         <div class="flex items-center gap-3">
-          <p class="text-[10px] text-slate-500">Kinooz Al-Alam For Travel & Tourism Agency</p>
+          <p class="text-[10px] text-slate-500" id="footerAgencySubEn">Kinooz Al-Alam For Travel & Tourism Agency</p>
           <!-- Stealth Admin Access Icon Button -->
           <button onclick="openAdminAuthModal()" title="إدارة النظام" class="text-slate-700 hover:text-brand-gold transition text-xs p-1.5 rounded-lg hover:bg-slate-800">
             <i class="fas fa-lock text-[11px]"></i>
@@ -750,21 +749,18 @@
     </div>
   </footer>
 
-  <!-- Floating Action Buttons (With Group + Chat + Phone) -->
+  <!-- Floating Action Buttons -->
   <div class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2.5">
-    <!-- WhatsApp Group Quick Floating Pill -->
     <a id="floatingWaGroup" href="#" target="_blank" title="انضم لمجموعة العروض بالواتساب" class="flex items-center gap-2 px-3.5 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-2xl transition transform hover:scale-105 border border-emerald-400/50">
       <i class="fas fa-users text-sm"></i>
       <span class="hidden sm:inline">مجموعة العروض</span>
     </a>
     
-    <!-- Phone Call Floating Button -->
-    <a href="tel:+966530963551" title="اتصال مباشر" class="w-12 h-12 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center transition transform hover:scale-110">
+    <a id="floatingPhone" href="tel:+966530963551" title="اتصال مباشر" class="w-12 h-12 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center transition transform hover:scale-110">
       <i class="fas fa-phone-alt text-lg"></i>
     </a>
     
-    <!-- WhatsApp Direct Chat Floating Button -->
-    <a href="https://wa.me/249913389597" target="_blank" title="محادثة واتساب مباشرة" class="w-13 h-13 p-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-2xl flex items-center justify-center transition transform hover:scale-110 pulse-btn border-2 border-white">
+    <a id="floatingWhatsApp" href="https://wa.me/249913389597" target="_blank" title="محادثة واتساب مباشرة" class="w-13 h-13 p-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-2xl flex items-center justify-center transition transform hover:scale-110 pulse-btn border-2 border-white">
       <i class="fab fa-whatsapp text-2xl sm:text-3xl"></i>
     </a>
   </div>
@@ -835,7 +831,6 @@
     <!-- Header -->
     <header class="bg-brand-navy border-b border-slate-800 px-4 sm:px-6 py-3.5 flex items-center justify-between shrink-0">
       <div class="flex items-center gap-3">
-        <!-- Mobile Sidebar Toggle -->
         <button onclick="toggleAdminSidebar()" class="lg:hidden text-brand-gold hover:text-white text-xl p-1.5 rounded-lg focus:outline-none">
           <i class="fas fa-bars"></i>
         </button>
@@ -844,14 +839,14 @@
         </div>
         <div>
           <h2 class="text-xs sm:text-base font-bold gold-text-gradient leading-tight">لوحة إدارة كنوز العالم</h2>
-          <p class="text-[10px] sm:text-[11px] text-slate-400 hidden sm:block">تحكم كامل ومزامنة سحابية مع Firebase</p>
+          <p class="text-[10px] sm:text-[11px] text-slate-400 hidden sm:block">حفظ ومزامنة فورية وسحابية تلقائياً</p>
         </div>
       </div>
 
       <div class="flex items-center gap-2 sm:gap-3">
-        <button onclick="saveAllChangesToFirebase()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs px-3 sm:px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 shadow transition">
-          <i class="fas fa-cloud-upload-alt"></i> <span class="hidden sm:inline">حفظ ومزامنة سحابية</span>
-        </button>
+        <div class="hidden sm:flex items-center gap-1.5 bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 text-[11px] px-3 py-1.5 rounded-xl font-medium">
+          <i class="fas fa-check-circle animate-pulse"></i> <span>الحفظ التلقائي مفعل</span>
+        </div>
         <button onclick="logoutAdmin()" class="bg-rose-600/20 text-rose-300 border border-rose-500/30 hover:bg-rose-600 hover:text-white text-[11px] sm:text-xs px-3 sm:px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 transition">
           <i class="fas fa-sign-out-alt"></i> <span>خروج</span>
         </button>
@@ -860,10 +855,8 @@
 
     <!-- Admin Body -->
     <div class="flex-1 flex overflow-hidden relative">
-      <!-- Backdrop for mobile sidebar -->
       <div id="adminSidebarBackdrop" onclick="toggleAdminSidebar()" class="fixed inset-0 bg-black/60 z-30 hidden lg:hidden"></div>
 
-      <!-- Sidebar -->
       <aside id="adminSidebar" class="fixed lg:static inset-y-0 right-0 z-40 w-64 bg-brand-dark border-l border-slate-800 p-4 shrink-0 flex flex-col justify-between overflow-y-auto custom-scrollbar transform translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="space-y-1 text-xs font-semibold">
           <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-800 lg:hidden">
@@ -914,7 +907,7 @@
         </div>
 
         <div class="pt-4 border-t border-slate-800 text-[10px] text-slate-400 mt-4">
-          <div>حالة الاتصال: <span class="text-emerald-400 font-semibold" id="firebaseStatusIndicator">Firestore متصل</span></div>
+          <div>حالة السحابة: <span class="text-emerald-400 font-semibold" id="firebaseStatusIndicator">جاري الاتصال بالسحابة...</span></div>
         </div>
       </aside>
 
@@ -1051,7 +1044,7 @@
         <div id="tab-settings" class="space-y-6 hidden">
           <div class="bg-brand-navy p-5 sm:p-6 rounded-2xl border border-slate-800 max-w-4xl">
             <h3 class="font-bold text-white text-base sm:text-lg mb-1 gold-text-gradient">هوية الوكالة، الشعار، ومجموعات التواصل</h3>
-            <p class="text-xs text-slate-400 mb-6">يمكنك هنا تغيير رابط اللوجو ورابط مجموعة الواتساب ورابط صفحة الفيسبوك وحفظها مباشرة</p>
+            <p class="text-xs text-slate-400 mb-6">أي تعديل تقوم به هنا يتم حفظه ونشره سحابياً فوراً لجميع الأجهزة والزوار.</p>
 
             <form onsubmit="handleSaveSettings(event)" class="space-y-5 text-xs">
               
@@ -1123,8 +1116,8 @@
                 </div>
               </div>
 
-              <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition">
-                حفظ كافة إعدادات الهوية والروابط
+              <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition flex items-center gap-2">
+                <i class="fas fa-save"></i> <span>حفظ وتطبيق سحابي فوري</span>
               </button>
             </form>
           </div>
@@ -1184,7 +1177,7 @@
                 <input type="url" id="heroFormBgImg" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
               </div>
               <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition">
-                حفظ بيانات الواجهة
+                حفظ ونشر التعديلات سحابياً
               </button>
             </form>
           </div>
@@ -1208,7 +1201,7 @@
                 <input type="url" id="aboutFormImg" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" dir="ltr">
               </div>
               <button type="submit" class="gold-gradient text-brand-dark px-6 py-2.5 rounded-xl font-bold text-xs shadow hover:opacity-95 transition">
-                حفظ محتوى من نحن
+                حفظ ونشر المحتوى سحابياً
               </button>
             </form>
           </div>
@@ -1298,7 +1291,7 @@
         <div id="crudFormFieldsContainer" class="space-y-3"></div>
 
         <div class="pt-3 flex gap-2">
-          <button type="submit" class="flex-1 gold-gradient text-brand-dark py-2.5 rounded-xl font-bold text-xs">حفظ التعديلات</button>
+          <button type="submit" class="flex-1 gold-gradient text-brand-dark py-2.5 rounded-xl font-bold text-xs">حفظ ونشر التعديل فوراً</button>
           <button type="button" onclick="closeItemCrudModal()" class="px-4 py-2.5 bg-slate-800 text-slate-300 rounded-xl font-semibold">إلغاء</button>
         </div>
       </form>
@@ -1309,9 +1302,7 @@
   <!-- JAVASCRIPT & LOGIC ENGINE                  -->
   <!-- ========================================== -->
   <script>
-    /* -------------------------------------------------------------
-       1. ANTI-INSPECT PROTECTION SHIELD
-       ------------------------------------------------------------- */
+    /* 1. ANTI-INSPECT PROTECTION SHIELD */
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
       return false;
@@ -1324,9 +1315,7 @@
       if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67 || e.keyCode === 85)) return false;
     };
 
-    /* -------------------------------------------------------------
-       2. SECURE HASHING ALGORITHM (SHA-256)
-       ------------------------------------------------------------- */
+    /* 2. SECURE HASHING ALGORITHM (SHA-256) */
     async function sha256(message) {
       const msgBuffer = new TextEncoder().encode(message);
       const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -1334,9 +1323,7 @@
       return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    /* -------------------------------------------------------------
-       3. DEFAULT INITIAL DATA SEED (WITH WHATSAPP GROUP & FACEBOOK)
-       ------------------------------------------------------------- */
+    /* 3. DEFAULT INITIAL DATA SEED */
     const DEFAULT_DATA = {
       hero: {
         badge: "بوابتكم لرحلات استثنائية حول العالم",
@@ -1402,9 +1389,7 @@
     let db = null;
     let isFirebaseReady = false;
 
-    /* -------------------------------------------------------------
-       4. FIREBASE CONFIGURATION
-       ------------------------------------------------------------- */
+    /* 4. FIREBASE CONFIGURATION */
     const firebaseConfig = {
       apiKey: "AIzaSyCowbUjEOvXySeqw3YiuSG7VXUL7sUSfAE",
       authDomain: "kinooz-al-alam-travel.firebaseapp.com",
@@ -1421,12 +1406,14 @@
           firebase.initializeApp(firebaseConfig);
           db = firebase.firestore();
           isFirebaseReady = true;
-          document.getElementById('firebaseStatusIndicator').innerText = "متصل وسحابي";
+          const statusElem = document.getElementById('firebaseStatusIndicator');
+          if (statusElem) statusElem.innerText = "سحابي ومتزامن لحظياً";
           listenToFirestore();
         }
       } catch (e) {
         console.warn("Using offline storage:", e);
-        document.getElementById('firebaseStatusIndicator').innerText = "وضع التخزين المحلي";
+        const statusElem = document.getElementById('firebaseStatusIndicator');
+        if (statusElem) statusElem.innerText = "وضع الذاكرة المحلية";
       }
     }
 
@@ -1447,18 +1434,64 @@
       localStorage.setItem('kinooz_app_state', JSON.stringify(appState));
     }
 
+    /* 
+      5. UNIVERSAL AUTO-SYNC ENGINE
+      يحفظ التعديل في الذاكرة + يحدث واجهة المستخدم + يرسل فوراً للسحابة لكي يظهر في كل الأجهزة
+    */
+    async function autoSyncToCloud(silent = false) {
+      saveState();
+      renderAll();
+      if (isFirebaseReady && db) {
+        try {
+          await db.collection("agency_content").doc("site_data").set({
+            hero: appState.hero,
+            about: appState.about,
+            settings: appState.settings,
+            services: appState.services,
+            offers: appState.offers,
+            destinations: appState.destinations,
+            umrah: appState.umrah,
+            visas: appState.visas,
+            faq: appState.faq,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+          if (!silent) showToast("تم الحفظ والتطبيق ونشره سحابياً لجميع الأجهزة فوراً!", "success");
+        } catch(err) {
+          console.error("Firestore auto-sync error:", err);
+          if (!silent) showToast("تم الحفظ محلياً (تنبيه السحابة: " + err.message + ")", "info");
+        }
+      } else {
+        if (!silent) showToast("تم الحفظ بنجاح في المتصفح!", "info");
+      }
+    }
+
     function listenToFirestore() {
       if (!isFirebaseReady || !db) return;
       try {
+        // مراقبة المحتوى والإعدادات سحابياً
         db.collection("agency_content").doc("site_data").onSnapshot(doc => {
           if (doc.exists) {
             const data = doc.data();
-            Object.assign(appState, data);
+            if (data.hero) appState.hero = { ...appState.hero, ...data.hero };
+            if (data.about) appState.about = { ...appState.about, ...data.about };
+            if (data.settings) appState.settings = { ...appState.settings, ...data.settings };
+            if (Array.isArray(data.services)) appState.services = data.services;
+            if (Array.isArray(data.offers)) appState.offers = data.offers;
+            if (Array.isArray(data.destinations)) appState.destinations = data.destinations;
+            if (Array.isArray(data.umrah)) appState.umrah = data.umrah;
+            if (Array.isArray(data.visas)) appState.visas = data.visas;
+            if (Array.isArray(data.faq)) appState.faq = data.faq;
+
             saveState();
             renderAll();
+            populateAdminInputs();
+          } else {
+            // أول تشغيل للسحابة: رفع البيانات الأولية لتكون مرجعاً ثابتاً لكل الأجهزة
+            autoSyncToCloud(true);
           }
         }, err => console.log("Firestore sync notice:", err.message));
 
+        // مراقبة الحجوزات سحابياً
         db.collection("bookings").orderBy("createdAt", "desc").onSnapshot(snapshot => {
           const list = [];
           snapshot.forEach(d => list.push({ id: d.id, ...d.data() }));
@@ -1470,6 +1503,7 @@
           }
         }, err => console.log("Bookings snapshot notice:", err.message));
 
+        // مراقبة الاستفسارات سحابياً
         db.collection("inquiries").orderBy("createdAt", "desc").onSnapshot(snapshot => {
           const inqList = [];
           snapshot.forEach(d => inqList.push({ id: d.id, ...d.data() }));
@@ -1483,34 +1517,7 @@
       } catch(e){}
     }
 
-    async function saveAllChangesToFirebase() {
-      saveState();
-      if (!isFirebaseReady || !db) {
-        showToast("تم الحفظ محلياً في المتصفح بنجاح!", "info");
-        return;
-      }
-      try {
-        await db.collection("agency_content").doc("site_data").set({
-          hero: appState.hero,
-          about: appState.about,
-          settings: appState.settings,
-          services: appState.services,
-          offers: appState.offers,
-          destinations: appState.destinations,
-          umrah: appState.umrah,
-          visas: appState.visas,
-          faq: appState.faq,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-        showToast("تمت مزامنة كافة بيانات المنصة والشعار في Firebase!", "success");
-      } catch(err) {
-        showToast("خطأ في المزامنة السحابية: " + err.message, "error");
-      }
-    }
-
-    /* -------------------------------------------------------------
-       5. FRONTEND RENDERING
-       ------------------------------------------------------------- */
+    /* 6. FRONTEND RENDERING */
     function renderAll() {
       applyHeroAndAbout();
       applySettings();
@@ -1543,12 +1550,34 @@
       document.getElementById('navAgencyName').innerText = s.agencyNameAr;
       document.getElementById('navAgencySub').innerText = s.agencyNameEn;
       document.getElementById('contactAgencyTitle').innerText = s.agencyNameAr;
+      document.getElementById('contactAgencySub').innerText = s.agencyNameEn;
+      document.getElementById('footerAgencyName').innerText = s.agencyNameAr;
+      document.getElementById('footerCopyName').innerText = s.agencyNameAr;
+      document.getElementById('footerAgencySubEn').innerText = s.agencyNameEn;
+
+      // Contact & Topbar Phone
+      const cleanPhone = s.phone ? s.phone.replace(/\s+/g, '') : '';
       document.getElementById('contactPhone').innerText = s.phone;
-      document.getElementById('contactPhone').href = `tel:${s.phone.replace(/\s+/g, '')}`;
+      document.getElementById('contactPhone').href = `tel:${cleanPhone}`;
+      document.getElementById('topBarPhone').innerText = s.phone;
+      document.getElementById('footerPhone').innerText = s.phone;
+      document.getElementById('floatingPhone').href = `tel:${cleanPhone}`;
+
+      // Contact & Topbar WhatsApp
+      const cleanWa = s.whatsApp ? s.whatsApp.replace(/\D/g, '') : '';
       document.getElementById('contactWhatsApp').innerText = s.whatsApp;
-      document.getElementById('contactWhatsApp').href = `https://wa.me/${s.whatsApp.replace(/\D/g, '')}`;
+      document.getElementById('contactWhatsApp').href = `https://wa.me/${cleanWa}`;
+      document.getElementById('topBarWhatsApp').innerText = s.whatsApp;
+      document.getElementById('topBarWaDirect').href = `https://wa.me/${cleanWa}`;
+      document.getElementById('footerWa').innerText = s.whatsApp;
+      document.getElementById('floatingWhatsApp').href = `https://wa.me/${cleanWa}`;
+
+      // Email
       document.getElementById('contactEmail').innerText = s.email;
       document.getElementById('contactEmail').href = `mailto:${s.email}`;
+      document.getElementById('topBarEmail').innerText = s.email;
+      document.getElementById('topBarEmailLink').href = `mailto:${s.email}`;
+      document.getElementById('footerEmail').innerText = s.email;
 
       // WHATSAPP GROUP DYNAMIC LINKS
       const waGroupUrl = s.whatsAppGroup || "#";
@@ -1646,14 +1675,16 @@
     }
 
     let currentDestFilter = 'all';
-    function filterDestinations(cat) {
+    function filterDestinations(cat, btn) {
       currentDestFilter = cat;
       document.querySelectorAll('.dest-filter-btn').forEach(b => {
         b.classList.remove('bg-brand-navy', 'text-white');
         b.classList.add('bg-slate-100', 'text-slate-600');
       });
-      event.target.classList.add('bg-brand-navy', 'text-white');
-      event.target.classList.remove('bg-slate-100', 'text-slate-600');
+      if (btn) {
+        btn.classList.add('bg-brand-navy', 'text-white');
+        btn.classList.remove('bg-slate-100', 'text-slate-600');
+      }
       renderDestinations();
     }
 
@@ -1781,9 +1812,7 @@
       showToast("تم تحويل بياناتك إلى نموذج الحجز، يرجى إكمال البيانات والتأكيد.", "info");
     }
 
-    /* -------------------------------------------------------------
-       6. BOOKING ENGINE WITH CONFIRMATION POPUP MODAL
-       ------------------------------------------------------------- */
+    /* 7. BOOKING ENGINE WITH CONFIRMATION POPUP MODAL */
     function closeBookingSuccessModal() {
       document.getElementById('bookingSuccessModal').classList.add('hidden');
     }
@@ -1845,9 +1874,7 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
       renderAdminBookings();
     }
 
-    /* -------------------------------------------------------------
-       7. CONTACT INQUIRY ENGINE (SYNC WITH ADMIN PANEL & FIRESTORE)
-       ------------------------------------------------------------- */
+    /* 8. CONTACT INQUIRY ENGINE */
     async function handleInquirySubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSubmitInquiry');
@@ -1908,9 +1935,7 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
       }, 900);
     }
 
-    /* -------------------------------------------------------------
-       8. ADMIN AUTHENTICATION (USER/PASS + 2FA PIN)
-       ------------------------------------------------------------- */
+    /* 9. ADMIN AUTHENTICATION */
     let tempAuthPassed = false;
 
     function openAdminAuthModal() {
@@ -2070,9 +2095,7 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
       e.target.reset();
     }
 
-    /* -------------------------------------------------------------
-       9. ADMIN DRAWER, TABS, INQUIRIES & CRUD CONTROLS
-       ------------------------------------------------------------- */
+    /* 10. ADMIN DASHBOARD & CRUD HANDLERS WITH INSTANT CLOUD SYNC */
     function toggleAdminSidebar() {
       const sidebar = document.getElementById('adminSidebar');
       const backdrop = document.getElementById('adminSidebarBackdrop');
@@ -2269,8 +2292,8 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
       showToast("تم حذف الاستفسار بنجاح.", "info");
     }
 
-    /* Hero & About Save Handlers */
-    function handleSaveHeroSettings(e) {
+    /* Handlers WITH INSTANT CLOUD SYNC */
+    async function handleSaveHeroSettings(e) {
       e.preventDefault();
       appState.hero = {
         badge: document.getElementById('heroFormBadge').value.trim(),
@@ -2278,21 +2301,35 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
         subtitle: document.getElementById('heroFormSubtitle').value.trim(),
         bgImg: document.getElementById('heroFormBgImg').value.trim()
       };
-      saveState();
-      applyHeroAndAbout();
-      showToast("تم تحديث بيانات الواجهة الرئيسية بنجاح!", "success");
+      await autoSyncToCloud();
     }
 
-    function handleSaveAboutSettings(e) {
+    async function handleSaveAboutSettings(e) {
       e.preventDefault();
       appState.about = {
         heading: document.getElementById('aboutFormHeading').value.trim(),
         text: document.getElementById('aboutFormText').value.trim(),
         img: document.getElementById('aboutFormImg').value.trim()
       };
-      saveState();
-      applyHeroAndAbout();
-      showToast("تم تحديث محتوى (من نحن) بنجاح!", "success");
+      await autoSyncToCloud();
+    }
+
+    async function handleSaveSettings(e) {
+      e.preventDefault();
+      const enteredLogo = document.getElementById('setLogoUrl').value.trim();
+
+      appState.settings = {
+        agencyNameAr: document.getElementById('setAgencyNameAr').value.trim(),
+        agencyNameEn: document.getElementById('setAgencyNameEn').value.trim(),
+        whatsApp: document.getElementById('setWhatsApp').value.trim(),
+        whatsAppGroup: document.getElementById('setWhatsAppGroup').value.trim(),
+        facebookUrl: document.getElementById('setFacebookUrl').value.trim(),
+        phone: document.getElementById('setPhone').value.trim(),
+        email: document.getElementById('setEmail').value.trim(),
+        logoUrl: enteredLogo
+      };
+
+      await autoSyncToCloud();
     }
 
     /* Other CRUD Renderers */
@@ -2402,13 +2439,11 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
       `).join('');
     }
 
-    function deleteItem(col, id) {
-      if (!confirm("هل تريد حذف هذا العنصر نهائياً؟")) return;
+    async function deleteItem(col, id) {
+      if (!confirm("هل تريد حذف هذا العنصر نهائياً ونشر التغيير فوراً؟")) return;
       appState[col] = appState[col].filter(x => x.id !== id);
-      saveState();
-      renderAll();
+      await autoSyncToCloud();
       showAdminTab(col);
-      showToast("تم الحذف بنجاح.", "info");
     }
 
     /* CRUD Dynamic Modals */
@@ -2480,7 +2515,7 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
       `);
     }
 
-    function handleCrudFormSubmit(e) {
+    async function handleCrudFormSubmit(e) {
       e.preventDefault();
       const type = document.getElementById('crudItemType').value;
       const id = document.getElementById('crudItemId').value || (type[0] + Date.now().toString().slice(-4));
@@ -2511,10 +2546,8 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
         if (idx >= 0) appState.faq[idx] = item; else appState.faq.unshift(item);
       }
 
-      saveState();
-      renderAll();
       closeItemCrudModal();
-      showToast("تم حفظ التعديلات بنجاح!", "success");
+      await autoSyncToCloud();
     }
 
     function openEditItemModal(type, id) {
@@ -2582,30 +2615,7 @@ _تم الإرسال من منصة الحجز الإلكتروني لوكالة 
       previewLogoInput(s.logoUrl || "");
     }
 
-    async function handleSaveSettings(e) {
-      e.preventDefault();
-      const enteredLogo = document.getElementById('setLogoUrl').value.trim();
-
-      appState.settings = {
-        agencyNameAr: document.getElementById('setAgencyNameAr').value.trim(),
-        agencyNameEn: document.getElementById('setAgencyNameEn').value.trim(),
-        whatsApp: document.getElementById('setWhatsApp').value.trim(),
-        whatsAppGroup: document.getElementById('setWhatsAppGroup').value.trim(),
-        facebookUrl: document.getElementById('setFacebookUrl').value.trim(),
-        phone: document.getElementById('setPhone').value.trim(),
-        email: document.getElementById('setEmail').value.trim(),
-        logoUrl: enteredLogo
-      };
-
-      saveState();
-      applySettings();
-      await saveAllChangesToFirebase();
-      showToast("تم حفظ كافة إعدادات الهوية ومجموعة الواتساب والفيسبوك بنجاح!", "success");
-    }
-
-    /* -------------------------------------------------------------
-       10. UTILITIES & LIFECYCLE
-       ------------------------------------------------------------- */
+    /* 11. UTILITIES & LIFECYCLE */
     function showToast(msg, type = "info") {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
